@@ -376,17 +376,10 @@ javascript:void((function(f,urls,i,s){
 	*********************************************** */	
 	/* ***********************************************
 		ラジオボタンクリック
+		l	：	LABELオブジェクト(jQuery)
+		r	：	正規表現
 	*********************************************** */
 	function selectLabel(l,r){
-		if(false){
-			l.filter(function(){
-				const text = $(this).text();
-				return !!r.test(text);
-			})
-			.each(function(){
-				$(this).click();
-			});
-		}
 		l.each(function(){
 			const text = $(this).text();
 			if(r.test(text)){
