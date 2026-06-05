@@ -43,14 +43,26 @@ javascript:void((function(f,urls,i,s){
 	let history = []; 
 	const historyLength = 3;
 
-	let rdi = d.querySelectorAll("INPUT[type='radio'][name],INPUT[type='checkbox'][name]");
-	s="";
-	for(let n = 0; n < rdi.length ; n++){
-		if(s!=rdi[n].name){
-			s=rdi[n].name;
-			rdi[n].click();
+	// 処理済みのグループ名（name属性）を記録するセット
+	const processedNames = new Set();
+
+	const rc = d.querySelectorAll('input[type="radio"], input[type="checkbox"]');
+
+	for (const element of rc) {
+		// name属性がない場合は、単一の要素として扱うため一意のIDや空文字を使用
+		const groupName = element.name || element.id; 
+
+		// まだ処理していないグループの場合のみ実行
+		if (!processedNames.has(groupName)) {
+			processedNames.add(groupName);
+
+			element.checked = !element.checked;
+			// 実際に状態が変わったときのみイベントを発生させる（負荷軽減）
+			element.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
 		}
 	}
+
+
 	
 	
 	if($){
@@ -466,4 +478,11 @@ javascript:void((function(f,urls,i,s){
 			}
 		}
 	}
+	// 全角半角・空白の揺らぎを吸収する正規化関数
+	function normalizeText(str) {
+		if (!str) return "";
+		return str
+		.replace(/[Ａ-Ｚａ-ｚ０-９]/g, s => String.fromCharCode(s.charCodeAt(0) - 0xFEE0))
+		.replace(/\s+/g, "");
+	}	
 }));
