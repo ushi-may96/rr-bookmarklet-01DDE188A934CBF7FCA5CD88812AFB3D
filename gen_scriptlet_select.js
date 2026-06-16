@@ -158,10 +158,13 @@ javascript:void((function(f,urls,i,s){
 			}
 		}
 		
-		/* なるほどMC用の郵便番号 */
-		if($("input[type='number']").length >= 2){
-			$("input[type='number']").eq(0).val("891");
-			$("input[type='number']").eq(1).val("0404");
+		/**
+		 * なるほどMC用の郵便番号
+		 */
+		const postcodes = document.querySelectorAll('input[type="number"]');
+		if(postcodes?.length >=2 ){
+			postcodes[0].value='891';
+			postcodes[1].value='0404';
 		}
 		
 		/* Numers DX用 簡易修正 */
