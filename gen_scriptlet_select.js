@@ -160,6 +160,7 @@ javascript:void((function(f,urls,i,s){
 		
 		/**
 		 * なるほどMC用の郵便番号
+		 * 枠は2つある
 		 */
 		const postcodes = document.querySelectorAll('input[type="number"]');
 		if(postcodes?.length >=2 ){
@@ -167,16 +168,19 @@ javascript:void((function(f,urls,i,s){
 			postcodes[1].value='0404';
 		}
 		
-		/* Numers DX用 簡易修正 */
-		if($("input[type='tel'][name='number1']").length>0){
-			$("input[type='tel'][name='number1']").val(getRandomNumber_his());
-			$("input[type='tel'][name='number2']").val(getRandomNumber_his());
-			$("input[type='tel'][name='number3']").val(getRandomNumber_his());
-			$("input[type='tel'][name='number4']").val(getRandomNumber_his());
-			$("input[type='tel'][name='number5']").val(getRandomNumber_his());
-			$("input[type='tel'][name='number6']").val(getRandomNumber_his());
-		}
-		/* research.net 関連での例外処理(テキスト関連) */
+		/**
+		 * Numers DX用 ランダム値設定
+		 * 枠は6つある
+		 */
+		 const rnumbers = document.querySelectorAll('input[type="tel"][name*="number"]');
+
+		 if (rnumbers.length >= 6) {
+			 rnumbers.forEach((el) => {
+				 el.value = getRandomNumber_his();
+			 });
+		 }
+
+		 /* research.net 関連での例外処理(テキスト関連) */
 		//const $rn_label = $("span[class*='smqr-richTextContent']");
 		/*
 		if($rn_label.length){
