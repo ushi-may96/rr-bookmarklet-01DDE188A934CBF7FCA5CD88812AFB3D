@@ -25,20 +25,7 @@ javascript:void((function(f,urls,i,s){
 	
 	/*
 	ToDo
-	ラジオの全チェックが入らないぞ
-	
-	*/
-	/*
-	let rdi=d.getElementsByTagName('INPUT');
-	for(let n=0; n<rdi.length; n++){
-		let t=rdi[n].getAttribute('type').toUpperCase();
-		if('CHECKBOX'==t||'RADIO'==t){
-			if(s!=rdi[n].name){
-				s=rdi[n].name;
-				rdi[n].click();
-			}
-		}
-	}
+	ラジオの全チェックが入らないぞ	
 	*/
 	let history = []; 
 	const historyLength = 3;
@@ -180,50 +167,6 @@ javascript:void((function(f,urls,i,s){
 			 });
 		 }
 
-		 /* research.net 関連での例外処理(テキスト関連) */
-		//const $rn_label = $("span[class*='smqr-richTextContent']");
-		/*
-		if($rn_label.length){
-			$rn_label.each(function(){
-				const labelText = $(this).text();
-				if(/男|50/.test(labelText)){
-					$(this).trigger("click");
-				}
-			});
-		}
-		*/
-		// クラス名に 'user-generated' を含む span、または元のセレクタで指定
-		/*
-		const rnLabels = Array.from(
-		  document.querySelectorAll("label[data-sm-radio-button-label] span.user-generated")
-		).reverse();
-
-		rnLabels.forEach(span => {
-		  const labelText = span.textContent.trim();
-		  
-		  if (/男性|50|会社員|課長/.test(labelText)) {
-			const label = span.closest("label");
-			if (!label) return;
-
-			// 1. ラベルに関連付けられている input 要素（ラジオボタン本体）を探す
-			const inputId = label.getAttribute('for');
-			const input = inputId ? document.getElementById(inputId) : label.querySelector('input[type="radio"]');
-
-			if (input) {
-			  // 2. 二重クリックを防ぐため、直接 input の状態を書き換える
-			  input.checked = true;
-
-			  // 3. SurveyMonkey の見た目を更新するために、ラベル要素を「1回だけ」クリック
-			  label.click();
-
-			  // 4. SurveyMonkey のシステムに変更を強制通知する（最重要）
-			  const event = new Event('change', { bubbles: true });
-			  input.dispatchEvent(event);
-			}
-		  }
-		});
-		*/
-
 		// クラス名に 'user-generated' を含む span、または元のセレクタで指定
 		const rnLabels = Array.from(
 		  document.querySelectorAll("label[data-sm-radio-button-label] span.user-generated")
@@ -253,27 +196,7 @@ javascript:void((function(f,urls,i,s){
 			}
 		  }
 		});
-
-
 		
-		/* research.net 関連での例外処理(option関連) */
-		// const $rn_option = $("option[class*='smqr-selectOption']");
-		/*
-		if($rn_option.length){
-			$rn_option.each(function(){
-				const optionText = $(this).text();
-				if(/鹿児島/.test(optionText)){
-					// $(this).trigger("click");
-					// $(this).focus();
-					// $(this).change();
-					$(this).click();
-					$(this).prop("seledted",true);
-				}
-			});
-			// $rn_option.focus();
-			// $rn_option.change();
-		}
-		*/
 		// 1. 神奈川県の option 要素を探索
 		const targetOption = Array.from(document.querySelectorAll("select[data-sm-select] option")).find(option => {
 			return option.textContent.trim() === "鹿児島県";
@@ -397,26 +320,6 @@ javascript:void((function(f,urls,i,s){
 			}
 		});
 	}
-	/*
-	testcode
-		console.time("A");
-		$("div").filter(function(){
-			return /ポンタ/.test($(this).text());
-		})
-		.each(function(){
-			console.log($(this).text());
-		});
-		console.timeEnd("A");
-		
-		console.time("B");
-		$("div").each(function(){
-			const text = $(this).text();
-			if(/ポンタ/.test(text)){
-				console.log(text);
-			}
-		});
-		console.timeEnd("B");
-	*/
 	
 	/* ***********************************************
 		テキストボックス入力
