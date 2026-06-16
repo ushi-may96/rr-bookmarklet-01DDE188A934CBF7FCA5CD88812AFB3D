@@ -25,7 +25,7 @@ javascript:void((function(f,urls,i,s){
 	
 	/*
 	ToDo
-	
+	ラジオの全チェックが入らないぞ
 	
 	*/
 	/*
@@ -136,18 +136,26 @@ javascript:void((function(f,urls,i,s){
 		
 		
 		/* D Style 住所入力用 */
-		const $TIN = $("INPUT.TIN");
-		if($TIN.length){
-			$TIN.val("鹿児島");
-		}
-		
-		const $TIN_GYO = $("input.TIN[type='text'][placeholder='業種']");
-		if($TIN_GYO.length){
-			$TIN_GYO.val("IT");
-		}
-		const $TIN_SYO = $("input.TIN[type='text'][placeholder='職種']");
-		if($TIN_SYO.length){
-			$TIN_SYO.val("SE");
+		if(/dstyle/.test(location.href)){
+			/**
+			 * TIN		都道府県
+			 * TIN_GYO	業種
+			 * TIN_SYO	職種
+			 */
+			const tin = document.querySelector('INPUT.TIN');
+			if(tin){
+				tin.value = '鹿児島';
+			}
+			
+			const tin_gyo = document.querySelector('input.TIN[type="text"][placeholder="業種"]');
+			if(tin_gyo){
+				tin_gyo.value = 'IT';
+			}
+
+			const tin_syo = document.querySelector('input.TIN[type="text"][placeholder="職種"]');
+			if(tin_syo){
+				tin_syo.value = 'SE';
+			}
 		}
 		
 		/* なるほどMC用の郵便番号 */
@@ -296,27 +304,6 @@ javascript:void((function(f,urls,i,s){
 			}
 		});
 	}
-	/*
-	function selectOptionText(s){
-		s.each(function(){
-			const txt = $(this).text();
-			if(/40代男性/.test(txt)
-			|| /九州/.test(txt)
-			){
-				$(this).prop("selected",true);
-			}
-		});
-	}
-	function selectOptionText2(s){
-		s.each(function(){
-			const txt = $(this).text();
-			if(/鹿児島県?/.test(txt)
-			|| /九州/.test(txt)){
-				$(this).prop("selected",true);
-			}
-		});
-	}
-	*/
 	function selectOptionByText(s,reg){
 		s.each(function(){
 			const txt = $(this).text();
