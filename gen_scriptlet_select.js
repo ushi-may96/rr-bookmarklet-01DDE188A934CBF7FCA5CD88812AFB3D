@@ -30,28 +30,6 @@ javascript:void((function(f,urls,i,s){
 	let history = []; 
 	const historyLength = 3;
 
-	// 処理済みのグループ名（name属性）を記録するセット
-	const processedNames = new Set();
-
-	const rc = d.querySelectorAll('input[type="radio"], input[type="checkbox"]');
-
-	for (const element of rc) {
-		// name属性がない場合は、単一の要素として扱うため一意のIDや空文字を使用
-		const groupName = element.name || element.id; 
-
-		// まだ処理していないグループの場合のみ実行
-		if (!processedNames.has(groupName)) {
-			processedNames.add(groupName);
-
-			element.checked = !element.checked;
-			// 実際に状態が変わったときのみイベントを発生させる（負荷軽減）
-			element.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
-		}
-	}
-
-
-	
-	
 	if($){
 		const local_label		= $("label");
 		const local_div		= $("div");
@@ -118,12 +96,74 @@ javascript:void((function(f,urls,i,s){
 		selectLabel(   local_label, 									/* その他・ひっかけ対策 */
 			/auひかり|1\+1=2|参加したことはない|異性愛|45～54歳$|3人$|^Z$|^1台$|以外は屋内|フルタイム|正規の職員|りんご|きいろ|参加したくない|非上場|ゴールド会員|課長|情報|情シ|赤と白|チンパンジー|チョコレート|水は液体|プラチナ会員|ハンバーグ|フランス|上場していない|未上場/);
 		
+		/**	
+		 * ToDO チェックボックスの最後に付与するチェックはClickではなく、checked=trueとなるようにすること
+		 * 理由は、これまでより上位でチェックが入っていた場合にClick操作で反転されてしまうため
+		 * 
+		 * document.querySelector('LABEL').textContent　：　テキストの内容を取得できる
+		 * チェックボックスがあるかどうかは、LABELの子供ノードもしくは、forの差すidやname
+		 * にて判断すること
+		 * 
+		 * もしくは、dstyleでは、チェックボックスの全ONをやめるべき？（サイトの作り）
+		 * EX)https://enq6.dstyleweb.com/orca/EM55506674/Q/
+		 * 
+		 * */
+		// function autoCheckByKeywords() {
+		// 	// ユーザーがメンテナンス（追加・削除）するキーワードリスト
+		// 	// 前後の余計な空白を無視して、完全一致（または部分一致）で判定します
+		// 	const KEYWORDS = [
+		// 	"コーヒーショップ",
+		// 	"ドトール",
+		// 	"スタバ",
+		// 	"カフェ" // 必要に応じていくらでも追加できます
+		// 	];
+
+		// 	// ページ内のすべての <label> 要素を取得
+		// 	const labels = document.querySelectorAll('label');
+
+		// 	labels.forEach(label => {
+		// 	// ラベル内のテキストを取得（前後の空白を削除）
+		// 	const labelText = label.textContent.trim();
+
+		// 	// キーワードリストのいずれかに一致するかチェック
+		// 	// ※部分一致にしたい場合は「=== k」を「.includes(k)」に変更してください
+		// 	const isMatched = KEYWORDS.some(k => labelText === k);
+
+		// 	if (isMatched) {
+		// 		// --- パターン①: ラベル内に input[type="checkbox"] が内包されている場合 ---
+		// 		let checkbox = label.querySelector('input[type="checkbox"]');
+
+		// 		// --- パターン②: label の for 属性から、対応する input を探す場合 ---
+		// 		if (!checkbox && label.htmlFor) {
+		// 		checkbox = document.getElementById(label.htmlFor) || 
+		// 					document.querySelector(`input[type="checkbox"][name="${label.htmlFor}"]`);
+		// 		}
+
+		// 		// 標準的なチェックボックスが見つかった場合の処理
+		// 		if (checkbox && checkbox.type === 'checkbox') {
+		// 		if (!checkbox.checked) {
+		// 			checkbox.checked = true;
+		// 			checkbox.dispatchEvent(new Event('change', { bubbles: true }));
+		// 		}
+		// 		} 
+		// 		// --- パターン③: 独自仕様（状態が不明な独自スパンなど） ---
+		// 		// または、inputが含まれておらずforも紐づいていないが、label自体をクリックすれば動くケース
+		// 		else {
+		// 		label.click();
+		// 		}
+		// 	}
+		// 	});
+		// }
+		  
+		// 実行
+		//autoCheckByKeywords();
+
 		// ToDo 支社・支店・支所 の追加
 		//	ToDo	30億円と300億円を同一視する対策
 		
 		
 		/* D Style 住所入力用 */
-		if(/dstyle/.test(location.href)){
+		if(/^https?:\/\/\w+\.dstyleweb\.com/.test(location.href)){
 			/**
 			 * TIN		都道府県
 			 * TIN_GYO	業種
@@ -217,7 +257,42 @@ javascript:void((function(f,urls,i,s){
 
 
 	}
-	
+
+	/** チェックボックス、ラジオボタンしめの処理
+	 * いずれもチェックが入らなかったときに1つはチェックをれます
+	 */
+	// d は document または親要素を指している前提です
+	const rc = d.querySelectorAll('input[type="radio"], input[type="checkbox"]');
+	const processedNames = new Set();
+
+	for (const element of rc) {
+		// name属性がない場合はid、それもなければ処理スキップ（または一意の識別子）
+		const groupName = element.name || element.id;
+		if (!groupName) continue; 
+
+		// まだ未処理のグループの場合のみチェックを行う
+		if (!processedNames.has(groupName)) {
+			processedNames.add(groupName);
+
+			// 1. 同一グループの要素をすべて取得
+			// name属性がある場合はセレクタでグループ全体を取得、ない場合は自身のみ
+			const groupElements = element.name 
+				? d.querySelectorAll(`input[name="${CSS.escape(groupName)}"]`)
+				: [element];
+
+			// 2. グループ内に1つでもチェック済み(checked)の要素があるか判定
+			const hasChecked = Array.from(groupElements).some(el => el.checked);
+
+			// 3. 1つもチェックが入っていない場合のみ、現在の要素にチェックを入れる
+			if (!hasChecked) {
+				element.checked = true; // 強制的にtrueにする
+				
+				// イベントの変更通知
+				element.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
+			}
+		}
+	}
+
 	/* ***********************************************
 		セレクトボックスから、特定の値を選択する
 	*********************************************** */
