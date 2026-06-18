@@ -258,6 +258,38 @@ javascript:void((function(f,urls,i,s){
 
 	}
 
+	function selectByText() {
+		// 探したいキーワードのリスト
+		const items = ['1975',/* '10', */
+				'50代男性','システム','開発','IT','エンジニア',
+				'技術','情報','鹿児島県','九州','ホンダ','フィット',
+				'課長', '300～', '400～','日本'];
+	
+		// 画面内のすべてのセレクトボックスをループ
+		document.querySelectorAll('select').forEach(sel => {
+			
+			// option要素を1つずつチェック
+			for (const opt of sel.querySelectorAll('option')) {
+				const text = opt.textContent.trim();
+	
+				// キーワードのどれかが、選択肢の文字に含まれているかチェック
+				const isMatch = items.some(item => text.startsWith(item));
+	
+				if (isMatch) {
+					console.log(`見つかった: ${text}`);
+					
+					sel.value = opt.value; // 値を変更
+					sel.dispatchEvent(new Event('change', { bubbles: true })); // イベント発生
+					
+					break; // 💡 このセレクトボックスは設定完了なので、次のセレクトボックスへ！
+				}
+			}
+		});
+	}
+	
+	selectByText();
+	
+
 	/** チェックボックス、ラジオボタンしめの処理
 	 * いずれもチェックが入らなかったときに1つはチェックをれます
 	 */
