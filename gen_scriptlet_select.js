@@ -32,15 +32,15 @@ javascript:void((function(f,urls,i,s){
 
 	if($){
 		const local_label		= $("label");
-		const local_div		= $("div");
+		const local_div			= $("div");
 		const local_span		= $("span");
-		const local_select	= $("select");
+		const local_select		= $("select");
 		const local_radio		= $("input[type='radio']");
 		
 		/************** 優先度 低　→　高 の順序に記述すること ************** */
 		
-		selectOption(local_select);
-		selectOptionByText($("option"), /50代男性|システム|開発|IT|エンジニア|技術|情報|鹿児島県?|九州|ホンダ|フィット|1975|10|日本$/);
+		//selectOption(local_select);
+		//selectOptionByText($("option"), /50代男性|システム|開発|IT|エンジニア|技術|情報|鹿児島県?|九州|ホンダ|フィット|1975|10|日本$/);
 		allSelectRadio(local_radio);
 		selectRadio(   local_radio);
 		inputAge(       $("input[type='text'],input[type='tel']") );
@@ -260,10 +260,15 @@ javascript:void((function(f,urls,i,s){
 
 	function selectByText() {
 		// 探したいキーワードのリスト
-		const items = ['1975',/* '10', */
+		const age = getMyAge();
+		const items = ['1975', /10/,
 				'50代男性','システム','開発','IT','エンジニア',
-				'技術','情報','鹿児島県','九州','ホンダ','フィット',
-				'課長', '300～', '400～', '～500','日本'];
+				'技術','情報','九州','ホンダ','フィット',
+				'課長', '300～', '400～', '～500','日本',
+				age,
+				/鹿児島県?/,
+
+				];
 	
 		// 画面内のすべてのセレクトボックスをループ
 		document.querySelectorAll('select').forEach(sel => {
@@ -272,9 +277,17 @@ javascript:void((function(f,urls,i,s){
 			for (const opt of sel.querySelectorAll('option')) {
 				const text = opt.textContent.trim();
 	
-				// キーワードのどれかが、選択肢の文字に含まれているかチェック
-				const isMatch = items.some(item => text.startsWith(item));
-	
+				// キーワードのどれかにマッチするかチェック
+				const isMatch = items.some(item => {
+					if (item instanceof RegExp) {
+						// 正規表現オブジェクトの場合は test() で判定
+						return item.test(text);
+					} else {
+						// 通常の文字列の場合は、元の仕様通り前方一致（startsWith）で判定
+						return text.startsWith(item);
+					}
+				});	
+
 				if (isMatch) {
 					console.log(`見つかった: ${text}`);
 					
