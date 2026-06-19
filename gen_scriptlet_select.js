@@ -258,6 +258,18 @@ javascript:void((function(f,urls,i,s){
 
 	}
 
+	/** fast-askで「その他」の取り扱い
+	 * テキストボックスに余計な値が入力されないように調整する
+	 */
+	if(/fast-ask\.com/.test(location.href)){
+		//LABEL その他がある場合は、テキストを強制的にクリアする
+		const isOther = [...document.querySelectorAll('label')].some(el => el.textContent.trim() ==='その他');
+		const txtItem = document.querySelector('input[type="text"]');
+		if(isOther && txtItem){
+			txtItem.value = '';
+		}
+	}
+
 	function selectByText() {
 		// 探したいキーワードのリスト
 		const age = getMyAge();
