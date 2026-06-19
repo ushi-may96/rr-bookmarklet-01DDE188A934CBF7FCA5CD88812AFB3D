@@ -262,12 +262,17 @@ javascript:void((function(f,urls,i,s){
 	 * テキストボックスに余計な値が入力されないように調整する
 	 */
 	if(/fast-ask\.com/.test(location.href)){
-		//LABEL その他がある場合は、テキストを強制的にクリアする
-		const isOther = [...document.querySelectorAll('label')].some(el => el.textContent.trim() ==='その他');
+		// 1. まずはピンポイントでテキストボックスを探す（高速）
 		const txtItem = document.querySelector('input[type="text"]');
-		if(isOther && txtItem){
+
+		// 2. テキストボックスが存在する場合のみ、"その他" のLABELを探す
+		// ※ txtItem が null なら、右側の some() は実行すらされずスキップされます（短絡評価）
+		const isOther = txtItem && [...document.querySelectorAll('label')].some(el => el.textContent.trim() === 'その他');
+
+		// 3. 両方揃っていればクリアする
+		if (isOther) {
 			txtItem.value = '';
-		}
+		}		
 	}
 
 	function selectByText() {
