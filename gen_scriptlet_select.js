@@ -43,7 +43,31 @@ javascript:void((function(f,urls,i,s){
 		//selectOptionByText($("option"), /50代男性|システム|開発|IT|エンジニア|技術|情報|鹿児島県?|九州|ホンダ|フィット|1975|10|日本$/);
 		allSelectRadio(local_radio);
 		selectRadio(   local_radio);
-		inputAge(       $("input[type='text'],input[type='tel']") );
+
+		/** fast-askで「その他」の取り扱い
+		 * テキストボックスに余計な値が入力されないように調整する
+		 */
+		let isOther = false;
+		if(/fast-ask\.com/.test(location.href)){
+			// 1. まずはピンポイントでテキストボックスを探す（高速）
+			const txtItem = document.querySelector('input[type="text"]');
+
+			// 2. テキストボックスが存在する場合のみ、"その他" のLABELを探す
+			// ※ txtItem が null なら、右側の some() は実行すらされずスキップされます（短絡評価）
+			isOther = txtItem && [...document.querySelectorAll('label')].some(el => el.textContent.trim() === 'その他');
+
+			// 3. 両方揃っていればクリアする
+			//if (isOther) {
+			//	txtItem.value = '';
+			//}		
+		}
+		if(isOther){
+			// fast-askで「その他」あり→noop
+		}else{
+			// 通常ページで年齢記入
+			inputAge(       $("input[type='text'],input[type='tel']") );
+		}
+		// 年齢記入のイレギュラー調整
 		ignoreAge();
 		
 		/* 楽天のアンケートで、46番目の都道府県を選択する方法 */
@@ -94,73 +118,10 @@ javascript:void((function(f,urls,i,s){
 		selectLabel(   local_label, /ホンダ|ハイブリッド|HEV|フィット|honda|fit|コンパクト/i);
 																	/* 車関連 */
 		selectLabel(   local_label, 									/* その他・ひっかけ対策 */
-			/auひかり|1\+1=2|参加したことはない|異性愛|45～54歳$|3人$|^Z$|^1台$|以外は屋内|フルタイム|正規の職員|りんご|きいろ|参加したくない|非上場|ゴールド会員|課長|情報|情シ|赤と白|チンパンジー|チョコレート|水は液体|プラチナ会員|ハンバーグ|フランス|上場していない|未上場/);
-		
-		/**	
-		 * ToDO チェックボックスの最後に付与するチェックはClickではなく、checked=trueとなるようにすること
-		 * 理由は、これまでより上位でチェックが入っていた場合にClick操作で反転されてしまうため
-		 * 
-		 * document.querySelector('LABEL').textContent　：　テキストの内容を取得できる
-		 * チェックボックスがあるかどうかは、LABELの子供ノードもしくは、forの差すidやname
-		 * にて判断すること
-		 * 
-		 * もしくは、dstyleでは、チェックボックスの全ONをやめるべき？（サイトの作り）
-		 * EX)https://enq6.dstyleweb.com/orca/EM55506674/Q/
-		 * 
-		 * */
-		// function autoCheckByKeywords() {
-		// 	// ユーザーがメンテナンス（追加・削除）するキーワードリスト
-		// 	// 前後の余計な空白を無視して、完全一致（または部分一致）で判定します
-		// 	const KEYWORDS = [
-		// 	"コーヒーショップ",
-		// 	"ドトール",
-		// 	"スタバ",
-		// 	"カフェ" // 必要に応じていくらでも追加できます
-		// 	];
-
-		// 	// ページ内のすべての <label> 要素を取得
-		// 	const labels = document.querySelectorAll('label');
-
-		// 	labels.forEach(label => {
-		// 	// ラベル内のテキストを取得（前後の空白を削除）
-		// 	const labelText = label.textContent.trim();
-
-		// 	// キーワードリストのいずれかに一致するかチェック
-		// 	// ※部分一致にしたい場合は「=== k」を「.includes(k)」に変更してください
-		// 	const isMatched = KEYWORDS.some(k => labelText === k);
-
-		// 	if (isMatched) {
-		// 		// --- パターン①: ラベル内に input[type="checkbox"] が内包されている場合 ---
-		// 		let checkbox = label.querySelector('input[type="checkbox"]');
-
-		// 		// --- パターン②: label の for 属性から、対応する input を探す場合 ---
-		// 		if (!checkbox && label.htmlFor) {
-		// 		checkbox = document.getElementById(label.htmlFor) || 
-		// 					document.querySelector(`input[type="checkbox"][name="${label.htmlFor}"]`);
-		// 		}
-
-		// 		// 標準的なチェックボックスが見つかった場合の処理
-		// 		if (checkbox && checkbox.type === 'checkbox') {
-		// 		if (!checkbox.checked) {
-		// 			checkbox.checked = true;
-		// 			checkbox.dispatchEvent(new Event('change', { bubbles: true }));
-		// 		}
-		// 		} 
-		// 		// --- パターン③: 独自仕様（状態が不明な独自スパンなど） ---
-		// 		// または、inputが含まれておらずforも紐づいていないが、label自体をクリックすれば動くケース
-		// 		else {
-		// 		label.click();
-		// 		}
-		// 	}
-		// 	});
-		// }
-		  
-		// 実行
-		//autoCheckByKeywords();
+			/auひかり|1\+1=2|20年以上|参加したことはない|異性愛|45～54歳$|3人$|^Z$|^1台$|以外は屋内|フルタイム|正規の職員|りんご|きいろ|参加したくない|非上場|ゴールド会員|課長|情報|情シ|赤と白|チンパンジー|チョコレート|水は液体|プラチナ会員|ハンバーグ|フランス|上場していない|未上場/);
 
 		// ToDo 支社・支店・支所 の追加
 		//	ToDo	30億円と300億円を同一視する対策
-		
 		
 		/* D Style 住所入力用 */
 		if(/^https?:\/\/\w+\.dstyleweb\.com/.test(location.href)){
@@ -190,7 +151,7 @@ javascript:void((function(f,urls,i,s){
 		 * 枠は2つある
 		 */
 		const postcodes = document.querySelectorAll('input[type="number"]');
-		if(postcodes?.length >=2 ){
+		if(postcodes.length >=2 ){
 			postcodes[0].value='891';
 			postcodes[1].value='0404';
 		}
@@ -258,23 +219,6 @@ javascript:void((function(f,urls,i,s){
 
 	}
 
-	/** fast-askで「その他」の取り扱い
-	 * テキストボックスに余計な値が入力されないように調整する
-	 */
-	if(/fast-ask\.com/.test(location.href)){
-		// 1. まずはピンポイントでテキストボックスを探す（高速）
-		const txtItem = document.querySelector('input[type="text"]');
-
-		// 2. テキストボックスが存在する場合のみ、"その他" のLABELを探す
-		// ※ txtItem が null なら、右側の some() は実行すらされずスキップされます（短絡評価）
-		const isOther = txtItem && [...document.querySelectorAll('label')].some(el => el.textContent.trim() === 'その他');
-
-		// 3. 両方揃っていればクリアする
-		if (isOther) {
-			txtItem.value = '';
-		}		
-	}
-
 	function selectByText() {
 		// 探したいキーワードのリスト
 		const age = getMyAge();
@@ -283,7 +227,7 @@ javascript:void((function(f,urls,i,s){
 				'技術','情報','九州','ホンダ','フィット',
 				'課長', '300～', '400～', '～500','日本',
 				age,
-				/鹿児島県?/,
+				/鹿児島県?/,/^(?:犬|イヌ)$/
 
 				];
 	
@@ -323,8 +267,7 @@ javascript:void((function(f,urls,i,s){
 	/** チェックボックス、ラジオボタンしめの処理
 	 * いずれもチェックが入らなかったときに1つはチェックをれます
 	 */
-	// d は document または親要素を指している前提です
-	const rc = d.querySelectorAll('input[type="radio"], input[type="checkbox"]');
+	const rc = document.querySelectorAll('input[type="radio"], input[type="checkbox"]');
 	const processedNames = new Set();
 
 	for (const element of rc) {
@@ -502,16 +445,19 @@ javascript:void((function(f,urls,i,s){
 
 	  return newNum;
 	}
+
+	/** DStyle用の「その他」処理
+	 * LABELにその他がある時に、テキストボックスは強制的に空にする
+	 */
 	function ignoreAge(){
 		if(/dstyleweb/.test(location.href)){
-			const $sonotaText = $("input.CIN[type='text']");
-			if($sonotaText.length){
-				$("label").each(function(){
-					if(/その他/.test($(this).text())){
-						$sonotaText.val("");
-						return false;
-					}
-				});
+			const sonotaText = document.querySelector('input.CIN[type="text"]');
+			if(sonotaText){
+				const isOtherLabel = [...document.querySelectorAll('label')]
+					.some(el=>el.textContent.trim()==='その他');
+				if(isOtherLabel){
+					sonotaText.value = '';
+				}
 			}
 		}
 	}
