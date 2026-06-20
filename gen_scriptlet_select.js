@@ -70,8 +70,6 @@ javascript:void((function(f,urls,i,s){
 		// 年齢記入のイレギュラー調整
 		ignoreAge();
 		
-		/* 楽天のアンケートで、46番目の都道府県を選択する方法 */
-		$("div.esb-item[data-value='46']").click();
 		selectLabel(   local_label, /イギリス|東京/);					/* 品質管理用 */
 		selectLabel(   local_label, /男性/);							/* 性別選択を想定 */
 		selectLabel(   local_label, /50[代|歳]?[-|~|～]?歳?/);			/* 年齢選択を想定 */
@@ -85,8 +83,11 @@ javascript:void((function(f,urls,i,s){
 		selectLabel( local_label,   /既婚|男性.*既婚/);					/* 婚姻状況を想定 */
 		selectLabel( local_label,   /既婚$|既婚（?配偶者あり|既婚\(?配偶者あり/);			/* 婚姻状況を想定 */
 		selectLabel( local_label,   /既婚.+子どもあり/);				/* 婚姻状況を想定 */
+
 		/* 楽天のアンケートで、46番目の都道府県を選択する方法 */
-		$("div.esb-item[data-value='46']").click();
+		if(/rakuten/.test(location.href)){
+			document.querySelector('div.esb-item[data-value="46"]')?.click();
+		}
 
 		selectLabel(   $("span.radio-button-label-text"), /会社/);		/* 会社員を想定 */
 		selectLabel(   local_label, /(中学生|高等学校|高校|高卒)/);		/* 学歴 */
