@@ -31,18 +31,15 @@ javascript:void((function(f,urls,i,s){
 	const historyLength = 3;
 
 	if($){
-		const local_label		= $("label");
-		const local_div			= $("div");
-		const local_span		= $("span");
-		const local_select		= $("select");
-		const local_radio		= $("input[type='radio']");
-		
+
+		const cachedLabel		= document.querySelectorAll('LABEL');
+		const cachedDiv			= document.querySelectorAll('DIV');
+		const cachedSpan		= document.querySelectorAll('SPAN');
+		const cachedRadio		= document.querySelectorAll('input[type="radio"],input[type="checkbox"]')
 		/************** 優先度 低　→　高 の順序に記述すること ************** */
 		
-		//selectOption(local_select);
-		//selectOptionByText($("option"), /50代男性|システム|開発|IT|エンジニア|技術|情報|鹿児島県?|九州|ホンダ|フィット|1975|10|日本$/);
-		allSelectRadio(local_radio);
-		selectRadio(   local_radio);
+		//allSelectRadio(local_radio);
+		selectRadioByText(   cachedRadio);
 
 		/** fast-askで「その他」の取り扱い
 		 * テキストボックスに余計な値が入力されないように調整する
@@ -65,60 +62,60 @@ javascript:void((function(f,urls,i,s){
 			// fast-askで「その他」あり→noop
 		}else{
 			// 通常ページで年齢記入
-			inputAge(       $("input[type='text'],input[type='tel']") );
+			inputAge(       document.querySelector('input[type="text"],input[type="tel"]'));
 		}
 		// 年齢記入のイレギュラー調整
 		ignoreAge();
 		
-		selectLabel(   local_label, /イギリス|東京/);					/* 品質管理用 */
-		selectLabel(   local_label, /男性/);							/* 性別選択を想定 */
-		selectLabel(   local_label, /50[代|歳]?[-|~|～]?歳?/);			/* 年齢選択を想定 */
-		selectLabel(   local_div,   /50[代|歳]?[-|~|～]?歳?/);			/* 年齢選択を想定 */
-		selectLabel(   local_label, /男性.50[代|歳]?[-|~|～]?歳?/);	/* 年齢選択を想定 */
-		selectLabel(   local_div,   /男性.*50[代|歳]?[-|~|～]?歳?/);	/* 年齢選択を想定 */
-		selectLabel(   local_label, /50代男性/);						/* 年齢選択を想定 */
+		selectLabelByText(   cachedLabel, /イギリス|東京/);					/* 品質管理用 */
+		selectLabelByText(   cachedLabel, /男性/);							/* 性別選択を想定 */
+		selectLabelByText(   cachedLabel, /50[代|歳]?[-|~|～]?歳?/);			/* 年齢選択を想定 */
+		selectLabelByText(   cachedDiv,   /50[代|歳]?[-|~|～]?歳?/);			/* 年齢選択を想定 */
+		selectLabelByText(   cachedLabel, /男性.50[代|歳]?[-|~|～]?歳?/);	/* 年齢選択を想定 */
+		selectLabelByText(   cachedDiv,   /男性.*50[代|歳]?[-|~|～]?歳?/);	/* 年齢選択を想定 */
+		selectLabelByText(   cachedLabel, /50代男性/);						/* 年齢選択を想定 */
 
-		selectLabel( local_div,     /結婚している/);					/* 婚姻状況を想定 */
-		selectLabel( local_label,   /結婚している/);					/* 婚姻状況を想定 */
-		selectLabel( local_label,   /既婚|男性.*既婚/);					/* 婚姻状況を想定 */
-		selectLabel( local_label,   /既婚$|既婚（?配偶者あり|既婚\(?配偶者あり/);			/* 婚姻状況を想定 */
-		selectLabel( local_label,   /既婚.+子どもあり/);				/* 婚姻状況を想定 */
+		selectLabelByText( cachedDiv,     /結婚している/);					/* 婚姻状況を想定 */
+		selectLabelByText( cachedLabel,   /結婚している/);					/* 婚姻状況を想定 */
+		selectLabelByText( cachedLabel,   /既婚|男性.*既婚/);					/* 婚姻状況を想定 */
+		selectLabelByText( cachedLabel,   /既婚$|既婚（?配偶者あり|既婚\(?配偶者あり/);			/* 婚姻状況を想定 */
+		selectLabelByText( cachedLabel,   /既婚.+子どもあり/);				/* 婚姻状況を想定 */
 
 		/* 楽天のアンケートで、46番目の都道府県を選択する方法 */
 		if(/rakuten/.test(location.href)){
 			document.querySelector('div.esb-item[data-value="46"]')?.click();
 		}
 
-		selectLabel(   $("span.radio-button-label-text"), /会社/);		/* 会社員を想定 */
-		selectLabel(   local_label, /(中学生|高等学校|高校|高卒)/);		/* 学歴 */
-		selectLabel(   local_label, /中学2年(生男子)?$/);				/* 子供の～ */
-		//selectLabel(   local_label, /会社/);							/* 会社員を想定 */
-		selectLabel(   local_label, 
+		selectLabelByText(   document.querySelectorAll('span.radio-button-label-text'), /会社/);		/* 会社員を想定 */
+		selectLabelByText(   cachedLabel, /(中学生|高等学校|高校|高卒)/);		/* 学歴 */
+		selectLabelByText(   cachedLabel, /中学2年(生男子)?$/);				/* 子供の～ */
+
+		selectLabelByText(   cachedLabel, 
 			/(ソフトウェア|システムエンジニア|情報サービス|IT|システム開発|保守|運用関連職)/);	/* 業種 */
-		selectLabel(   local_label, /^(?!.*(契約|派遣))社員.*$/);		/* 会社員を想定 */
-		selectLabel(   local_label, /^正社員(?!.*管理職).*$/);			/* 会社員を想定 */
-		selectLabel(   local_label, /会社勤務\S+管理職/);				/* 会社員を想定 */
-		selectLabel(   local_label, /会社員/);							/* 会社?　＜ 会社員 を優先 */
-		selectLabel(   local_label, /正社員/);							/* 会社?　＜ 正社員 を優先 */
-		selectLabel(   local_label, /^正社員$/);						/* 会社?　＜ 正社員 を優先 */
-		selectLabel(   local_label, /((情報|通信)技術.*|技術[職|系]?)/);/* 会社?　＜ 正社員 を優先 */
-		selectLabel(   local_label, /^いない$/);
-		//selectLabel(   local_label, /500/);								/* 従業員数 */
-		selectLabel(   local_label, /[^,0-9]499\b/);					/* 従業員数(499が優先) */
-		selectLabel(   local_label, /(父親はいない|母親はいない|配偶者はいない|結婚していない|すべて正しい)/);	/* 電子機器のやーつ */
-		selectLabel(   local_label, /日本/);							/* 日本を想定 */
-		selectLabel(   local_label, /^日本$/);							/* 日本を想定 */
-		selectLabel(   local_label, /鹿児島/);							/* 鹿児島県を想定 */
-		selectLabel(   local_label, /九州/);							/* 九州を想定 */
-		selectLabel(   local_span	, /鹿児島/);							/* 都道府県 */
-		selectLabel(   local_label, /^200\b|^201\b/)					/* 従業員201～ */
-		selectLabel(   local_label, /[^,0-9]30{2}\b|[^,0-9]301\b/)		/* 従業員300～ */
-		selectLabel(   local_label, /^300\b|^301\b/)					/* 従業員300～ */
-		selectLabel(   local_label, /[^,0-9]400\b/);					/* 年収 1400や1,400回避 */
-		selectLabel(   local_label, /^400\b/);							/* 年収 */
-		selectLabel(   local_label, /ホンダ|ハイブリッド|HEV|フィット|honda|fit|コンパクト/i);
-																	/* 車関連 */
-		selectLabel(   local_label, 									/* その他・ひっかけ対策 */
+		selectLabelByText(   cachedLabel, /^(?!.*(契約|派遣))社員.*$/);		/* 会社員を想定 */
+		selectLabelByText(   cachedLabel, /^正社員(?!.*管理職).*$/);			/* 会社員を想定 */
+		selectLabelByText(   cachedLabel, /会社勤務\S+管理職/);				/* 会社員を想定 */
+		selectLabelByText(   cachedLabel, /会社員/);							/* 会社?　＜ 会社員 を優先 */
+		selectLabelByText(   cachedLabel, /正社員/);							/* 会社?　＜ 正社員 を優先 */
+		selectLabelByText(   cachedLabel, /^正社員$/);						/* 会社?　＜ 正社員 を優先 */
+		selectLabelByText(   cachedLabel, /((情報|通信)技術.*|技術[職|系]?)/);/* 会社?　＜ 正社員 を優先 */
+		selectLabelByText(   cachedLabel, /^いない$/);
+
+		selectLabelByText(   cachedLabel, /[^,0-9]499\b/);					/* 従業員数(499が優先) */
+		selectLabelByText(   cachedLabel, /(父親はいない|母親はいない|配偶者はいない|結婚していない|すべて正しい)/);	/* 電子機器のやーつ */
+		selectLabelByText(   cachedLabel, /日本/);							/* 日本を想定 */
+		selectLabelByText(   cachedLabel, /^日本$/);							/* 日本を想定 */
+		selectLabelByText(   cachedLabel, /鹿児島/);							/* 鹿児島県を想定 */
+		selectLabelByText(   cachedLabel, /九州/);							/* 九州を想定 */
+		selectLabelByText(   cachedSpan	, /鹿児島/);							/* 都道府県 */
+		selectLabelByText(   cachedLabel, /^200\b|^201\b/)					/* 従業員201～ */
+		selectLabelByText(   cachedLabel, /[^,0-9]30{2}\b|[^,0-9]301\b/)		/* 従業員300～ */
+		selectLabelByText(   cachedLabel, /^300\b|^301\b/)					/* 従業員300～ */
+		selectLabelByText(   cachedLabel, /[^,0-9]400\b/);					/* 年収 1400や1,400回避 */
+		selectLabelByText(   cachedLabel, /^400\b/);							/* 年収 */
+		selectLabelByText(   cachedLabel, /ホンダ|ハイブリッド|HEV|フィット|honda|fit|コンパクト/i);
+																		/* 車関連 */
+		selectLabelByText(   cachedLabel,								/* その他・ひっかけ対策 */
 			/auひかり|1\+1=2|20年以上|参加したことはない|異性愛|45～54歳$|3人$|^Z$|^1台$|以外は屋内|フルタイム|正規の職員|りんご|きいろ|参加したくない|非上場|ゴールド会員|課長|情報|情シ|赤と白|チンパンジー|チョコレート|水は液体|プラチナ会員|ハンバーグ|フランス|上場していない|未上場/);
 
 		// ToDo 支社・支店・支所 の追加
@@ -283,7 +280,7 @@ javascript:void((function(f,urls,i,s){
 			// 1. 同一グループの要素をすべて取得
 			// name属性がある場合はセレクタでグループ全体を取得、ない場合は自身のみ
 			const groupElements = element.name 
-				? d.querySelectorAll(`input[name="${CSS.escape(groupName)}"]`)
+				? document.querySelectorAll(`input[name="${CSS.escape(groupName)}"]`)
 				: [element];
 
 			// 2. グループ内に1つでもチェック済み(checked)の要素があるか判定
@@ -291,10 +288,11 @@ javascript:void((function(f,urls,i,s){
 
 			// 3. 1つもチェックが入っていない場合のみ、現在の要素にチェックを入れる
 			if (!hasChecked) {
-				element.checked = true; // 強制的にtrueにする
+				const grpEl = groupElements[0];
+				grpEl.checked = true; // 強制的にtrueにする
 				
 				// イベントの変更通知
-				element.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
+				grpEl.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
 			}
 		}
 	}
@@ -361,56 +359,45 @@ javascript:void((function(f,urls,i,s){
 			}
 		});
 	}
-	function selectRadio(s,t){
-		$(s).each(function(i){
-			if(0===i){
-				$(this).prop("checked",true);
+	function selectRadioByText(el){
+		const idx = 0;
+		for(const r of el){
+			if(idx===0){
+				r.checked = true;
+				++idx;
 			}
-			const text = $(this).next().text();
-			
-			if(/男/.test(text)){
-				$(this).prop("checked",true);
+			const text = r.textContent.trim();
+			if(/男|会社員|50代男性|50/.test(text)){
+				r.checked = true;
+				r.dispatchEvent(new Event('change', { bubbles: true }));
+				break;
 			}
-			if(text.includes(myAge)){
-				$(this).prop("checked",true);
-			}
-			if(/会社員/.test(text)){
-				$(this).prop("checked",true);
-			}		
-			if(/50代男性/.test(text)){
-				$(this).prop("checked",true);
-			}
-		});
+		}
 	}
 
-	/* ***********************************************
-		チェックボックスから、特定の値を選択する
-		対象→40、会社員
-	*********************************************** */	
-	/* ***********************************************
-		ラジオボタンクリック
-		l	：	LABELオブジェクト(jQuery)
-		r	：	正規表現
-	*********************************************** */
-	function selectLabel(l,r){
-		l.each(function(){
-			const text = $(this).text();
-			if(r.test(text)){
-				$(this).click();
-				// console.log("hit",$this.text(),r)
+	/** LABEL項目が見つかればクリックする
+	 * lbl	LABEL
+	 * reg  正規表現
+	 */
+	function selectLabelByText(lbl, reg){
+		for(const el of lbl){
+			const text = el.textContent.trim();
+			const isMatch = reg.test(text);
+			if(isMatch){
+				el.click();
+				//見つかったのでブレーク
+				break;
 			}
-		});
+		}
 	}
-	
 	/* ***********************************************
 		テキストボックス入力
-		対象→41 年齢
+		年齢
 	*********************************************** */	
-	function inputAge(s,v){
-		v = v || myAge;
-		$(s).each(function(){
-			$(this).val(v);
-		});
+	function inputAge(s){
+		if(s){
+			s.value = myAge;
+		}
 	}
 
 	/* ***********************************************
@@ -461,6 +448,18 @@ javascript:void((function(f,urls,i,s){
 				}
 			}
 		}
+		if(/enq\.web-mc\.net/.test(location.href)){
+			const sonotaText = document.querySelector('input[type="text"]');
+			if(sonotaText){
+				for(el of document.querySelectorAll('span.label-text')){
+					if(el.textContent.includes('その他')){
+						sonotaText.value = '';
+						break;
+					}
+				}
+			}
+		}
+
 	}
 	// 全角半角・空白の揺らぎを吸収する正規化関数
 	function normalizeText(str) {
