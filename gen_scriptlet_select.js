@@ -363,7 +363,7 @@ javascript:void((function(){
 			const sonotaText = document.querySelector('input.CIN[type="text"]');
 			if(sonotaText){
 				const isOtherLabel = [...document.querySelectorAll('label')]
-					.some(el=>el.textContent.trim()==='その他');
+					.some(el=>el.textContent.trim().startsWith('その他'));
 				if(isOtherLabel){
 					sonotaText.value = '';
 				}
