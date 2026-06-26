@@ -1,4 +1,5 @@
-javascript:void((function(){
+javascript:void(
+(function(){
 
 	console.clear();
 	console.log('rr.js start');
@@ -385,4 +386,5 @@ javascript:void((function(){
 		}
 
 	}
-})());
+})()// 即時関数の終了
+);// voidの終了
