@@ -1,5 +1,8 @@
 javascript:void((function(){
 
+	console.clear();
+	console.log('rr.js start');
+
 	const myAge = getMyAge().toString();
 	/*
 	ToDo
