@@ -62,8 +62,10 @@ javascript:void(
 	selectLabelByText( cachedLabel,   /既婚$|既婚（?配偶者あり|既婚\(?配偶者あり/);			/* 婚姻状況を想定 */
 	selectLabelByText( cachedLabel,   /既婚.+子どもあり/);				/* 婚姻状況を想定 */
 
-	/* 楽天のアンケートで、46番目の都道府県を選択する方法 */
-	if(/rakuten/.test(location.href)){
+	/** 
+	 * 楽天のアンケートで、46番目の都道府県を選択する方法 
+	 * https://enq.internet-research.jp/specific/enq/ */
+	if(/internet-research\.jp/.test(location.href)){
 		document.querySelector('div.esb-item[data-value="46"]')?.click();
 	}
 
