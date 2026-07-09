@@ -63,10 +63,27 @@ javascript:void(
 	selectLabelByText( cachedLabel,   /既婚.+子どもあり/);				/* 婚姻状況を想定 */
 
 	/** 
-	 * 楽天のアンケートで、46番目の都道府県を選択する方法 
-	 * https://enq.internet-research.jp/specific/enq/ */
-	if(/internet-research\.jp/.test(location.href)){
+	 * 楽天のアンケート
+	 * https://enq.internet-research.jp/specific/enq/
+	 *	46番目の都道府県を選択する方法
+	 * https://enq.member.insight.rakuten.co.jp/enq/
+	 * 	[きいろ][みどり]のひっかけ対策
+	 * 	document.querySelectorAll('div.inline-block div') のtextContent */
+	if(/internet-research\.jp|insight\.rakuten\.co\.jp/.test(location.href)){
+		// 都道府県
 		document.querySelector('div.esb-item[data-value="46"]')?.click();
+		// つけまちがいの対策
+		const targetTexts = new Set(['きいろ', 'みどり']);
+		for (const item of document.querySelectorAll('div.inline-block div')) {
+			const textItem = item.textContent.trim();
+			
+			if (targetTexts.has(textItem)) {
+				item.click();
+				//item.dispatchEvent(new Event('change', { bubbles: true }));
+				//clickでイベント伝達されるためdispatchは不要
+				//複数アイテムのヒットがあるため、break不要
+			}
+		}
 	}
 
 	selectLabelByText(   document.querySelectorAll('span.radio-button-label-text'), /会社/);		/* 会社員を想定 */
@@ -78,8 +95,8 @@ javascript:void(
 	selectLabelByText(   cachedLabel, /^(?!.*(契約|派遣))社員.*$/);		/* 会社員を想定 */
 	selectLabelByText(   cachedLabel, /^正社員(?!.*管理職).*$/);			/* 会社員を想定 */
 	selectLabelByText(   cachedLabel, /会社勤務\S+管理職/);				/* 会社員を想定 */
-	selectLabelByText(   cachedLabel, /会社員/);							/* 会社?　＜ 会社員 を優先 */
-	selectLabelByText(   cachedLabel, /正社員/);							/* 会社?　＜ 正社員 を優先 */
+	selectLabelByText(   cachedLabel, /会社員($|\W?管理|\W?課長)/);				/* 会社?　＜ 会社員 または 会社員（管理職） を優先 */
+	selectLabelByText(   cachedLabel, /正社員/);								/* 会社?　＜ 正社員 を優先 */
 	selectLabelByText(   cachedLabel, /^正社員$/);						/* 会社?　＜ 正社員 を優先 */
 	selectLabelByText(   cachedLabel, /((情報|通信)技術.*|技術[職|系]?)/);/* 会社?　＜ 正社員 を優先 */
 	selectLabelByText(   cachedLabel, /^いない$/);
@@ -205,7 +222,7 @@ javascript:void(
 		const items = ['1975', /10/,
 				'50代男性','システム','開発','IT','エンジニア',
 				'技術','情報','九州','ホンダ','フィット',
-				'課長', '300～', '400～', '～500','日本',
+				'課長', '300～', '400～', /400(?:万円)?～'/, '～500','日本',
 				age,
 				/鹿児島県?/,/^(?:犬|イヌ)$/
 
