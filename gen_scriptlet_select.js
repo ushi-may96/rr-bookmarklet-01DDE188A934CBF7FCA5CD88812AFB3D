@@ -116,7 +116,7 @@ javascript:void(
 	selectLabelByText(   cachedLabel, /ホンダ|ハイブリッド|HEV|フィット|honda|fit|コンパクト/i);
 																	/* 車関連 */
 	selectLabelByText(   cachedLabel,								/* その他・ひっかけ対策 */
-		/auひかり|1\+1=2|20年以上|参加したことはない|異性愛|45～54歳$|3人$|^Z$|^1台$|以外は屋内|フルタイム|正規の職員|りんご|きいろ|参加したくない|非上場|ゴールド会員|課長|情報|情シ|赤と白|チンパンジー|チョコレート|水は液体|プラチナ会員|ハンバーグ|フランス|上場していない|未上場/);
+		/ビーグル|メビウス|auひかり|1\+1=2|20年以上|参加したことはない|異性愛|45～54歳$|3人$|^Z$|^1台$|以外は屋内|フルタイム|正規の職員|りんご|きいろ|参加したくない|非上場|ゴールド会員|課長|情報|情シ|赤と白|チンパンジー|チョコレート|水は液体|プラチナ会員|ハンバーグ|フランス|上場していない|未上場/);
 
 	// ToDo 支社・支店・支所 の追加
 	//	ToDo	30億円と300億円を同一視する対策
@@ -156,6 +156,21 @@ javascript:void(
 		}
 	}
 	
+	/**
+	 * uniリサーチ用
+	 * 可能な限りチェックボックスをクリックする
+	 */
+	if(/^https?:\/\/unii-research\.com\//.test(location.href)){
+		const clickedNames = new Set();
+
+		for (const el of document.querySelectorAll('input[type="radio"]')) {
+			if (!clickedNames.has(el.name)) {
+				el.click();
+				clickedNames.add(el.name);
+			}
+		}		
+	}
+
 	/**
 	 * Numers DX用 ランダム値設定
 	 * 枠は6つある
