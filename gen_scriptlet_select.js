@@ -1,8 +1,9 @@
 javascript:void(
 (function(){
-
+	const scriptVersion = '2026072601'
+	
 	console.clear();
-	console.log('rr.js start');
+	console.log('rr.js start',`ver=${scriptVersion}`);
 
 	const myAge = getMyAge().toString();
 	/*
@@ -393,7 +394,7 @@ javascript:void(
 	  return newNum;
 	}
 
-	/** DStyle用の「その他」処理
+	/** DStyle用等の「その他」処理
 	 * LABELにその他がある時に、テキストボックスは強制的に空にする
 	 */
 	function ignoreAge(){
@@ -411,6 +412,17 @@ javascript:void(
 			const sonotaText = document.querySelector('input[type="text"]');
 			if(sonotaText){
 				for(el of document.querySelectorAll('span.label-text')){
+					if(el.textContent.includes('その他')){
+						sonotaText.value = '';
+						break;
+					}
+				}
+			}
+		}
+		if(/monitor\.macromill\.com\/airs\/exec\/answerAction\.do/.test(location.href)){
+			const sonotaText = document.querySelector('input[type="text"]');
+			if(sonotaText){
+				for(el of document.querySelectorAll('label')){
 					if(el.textContent.includes('その他')){
 						sonotaText.value = '';
 						break;
