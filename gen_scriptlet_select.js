@@ -419,18 +419,18 @@ javascript:void(
 				}
 			}
 		}
-		if(/monitor\.macromill\.com\/airs\/exec\/answerAction\.do/.test(location.href)){
-			const sonotaText = document.querySelector('input[type="text"]');
-			if(sonotaText){
-				for(el of document.querySelectorAll('label')){
-					if(el.textContent.includes('その他')){
-						sonotaText.value = '';
-						break;
-					}
+		/** 無条件に「その他」を判定するケース
+		 * macromill.com等
+		 * */		
+		const sonotaText = document.querySelector('input[type="text"]');
+		if(sonotaText){
+			for(el of document.querySelectorAll('label')){
+				if(el.textContent.includes('その他')){
+					sonotaText.value = '';
+					break;
 				}
 			}
 		}
-
 	}
 })()// 即時関数の終了
 );// voidの終了
