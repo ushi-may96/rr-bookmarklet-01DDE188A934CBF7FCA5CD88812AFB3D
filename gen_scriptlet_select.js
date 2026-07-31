@@ -1,6 +1,6 @@
 javascript:void(
 (function(){
-	const scriptVersion = '2026072601'
+	const scriptVersion = '2026073001'
 	
 	console.clear();
 	console.log('rr.js start',`ver=${scriptVersion}`);
@@ -44,7 +44,7 @@ javascript:void(
 		// fast-askで「その他」あり→noop
 	}else{
 		// 通常ページで年齢記入
-		inputAge(       document.querySelector('input[type="text"],input[type="tel"]'));
+		inputAge(       document.querySelector('input[type="text"],input[type="tel"],input[type="number"]'));
 	}
 	// 年齢記入のイレギュラー調整
 	ignoreAge();
