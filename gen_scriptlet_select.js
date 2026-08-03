@@ -1,6 +1,6 @@
 javascript:void(
 (function(){
-	const scriptVersion = '2026080201'
+	const scriptVersion = '2026080202'
 	
 	console.clear();
 	console.log('rr.js start',`ver=${scriptVersion}`);
@@ -489,7 +489,7 @@ javascript:void(
 		 * */		
 		const sonotaText = document.querySelector('input[type="text"]');
 		if(sonotaText){
-			for(el of document.querySelectorAll('label')){
+			for(el of document.querySelectorAll('label,div.side_v_text')){
 				if(el.textContent.includes('その他')){
 					sonotaText.value = '';
 					break;
