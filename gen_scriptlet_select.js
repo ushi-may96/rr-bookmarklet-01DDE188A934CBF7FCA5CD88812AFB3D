@@ -123,7 +123,7 @@ javascript:void(
 	 * 条件に一致する項目をすべてクリックする（途中でbreakしない）
 	 * 
 	*/
-	selectLabelByTextAll( cachedLabel, /^[赤|青|黄|緑]$/);			/** 見つかったラベルをすべてクリックする */
+	selectLabelByColor( cachedLabel, /^[赤青黄緑]$/);			/** 見つかったラベルをすべてクリックする */
 
 	// ToDo 支社・支店・支所 の追加
 	//	ToDo	30億円と300億円を同一視する対策
@@ -364,19 +364,57 @@ javascript:void(
 			}
 		}
 	}
-	/** LABEL項目が見つかればクリックする（すべてクリック）
-	 * lbl	LABEL
-	 * reg  正規表現
+	/**
+	 * 指定した正規表現にマッチするLABEL項目を選択し、それ以外をクリアする
+	 * @param {NodeList|Array<HTMLElement>} labels - 対象とするLABEL要素のリスト
+	 * @param {RegExp} colorRegex - マッチさせる色の正規表現
 	 */
-	function selectLabelByTextAll(lbl, reg){
-		for(const el of lbl){
-			const text = el.textContent.trim();
-			const isMatch = reg.test(text);
-			if(isMatch){
-				el.click();
-			}
-		}
+	function selectLabelByColor(labels, colorRegex){
+		// 1. ページ内に指定の色が「1つ以上あるか」を事前にチェック
+		const hasColorLabel = Array.from(labels).some(label => 
+			colorRegex.test(label.textContent.trim())
+		);
+
+		// 2. 色のLABELが存在する場合のみ、以下の処理を実行する
+		if (hasColorLabel) {
+			console.log("対象の色が見つかったため、選択状態の調整を開始します。");
+
+			// 【ステップA】先に「色以外」の選択をすべてクリアする
+			labels.forEach(label => {
+				const isColor = colorRegex.test(label.textContent.trim());
+				
+				if (!isColor) {
+					// label.htmlFor がある場合は、documentだけでなく、labelの所属するroot（ShadowDOM等考慮）や
+					// 最悪documentから探すが、念のためinputの存在をチェック
+					const input = label.querySelector('input') || (label.htmlFor ? document.getElementById(label.htmlFor) : null);
+					if (input && input.checked) {
+						input.checked = false; // チェックを外す
+						input.dispatchEvent(new Event('change', { bubbles: true }));
+					}
+				}
+			});
+
+			// 【ステップB】次に「指定の色」だけを選択状態にする
+			labels.forEach(label => {
+				const isColor = colorRegex.test(label.textContent.trim());
+				
+				if (isColor) {
+					const input = label.querySelector('input') || (label.htmlFor ? document.getElementById(label.htmlFor) : null);
+					if (input && !input.checked) {
+						input.checked = true; // チェックを入れる
+						input.dispatchEvent(new Event('change', { bubbles: true }));
+					} else if (!input) {
+						label.click(); // inputがない場合はクリック
+					}
+					console.log(`選択しました: ${label.textContent.trim()}`);
+				}
+			});
+		} else {
+			// 色がない場合は何もせず終了
+			console.log("対象の条件に一致する色が存在しないため、処理をスキップしました。");
+		}    
 	}
+
 	/* ***********************************************
 		テキストボックス入力
 		年齢
