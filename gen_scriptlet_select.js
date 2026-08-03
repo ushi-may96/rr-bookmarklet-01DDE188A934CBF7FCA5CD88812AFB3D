@@ -119,6 +119,12 @@ javascript:void(
 	selectLabelByText(   cachedLabel,								/* その他・ひっかけ対策 */
 		/ビーグル|メビウス|auひかり|1\+1=2|20年以上|参加したことはない|異性愛|45～54歳$|3人$|^Z$|^1台$|以外は屋内|フルタイム|正規の職員|りんご|きいろ|参加したくない|非上場|ゴールド会員|課長|情報|情シ|赤と白|チンパンジー|チョコレート|水は液体|プラチナ会員|ハンバーグ|フランス|上場していない|未上場/);
 
+	/**
+	 * 条件に一致する項目をすべてクリックする（途中でbreakしない）
+	 * 
+	*/
+	selectLabelByTextAll( cachedLabel, /^[赤|青|黄|緑]$/);			/** 見つかったラベルをすべてクリックする */
+
 	// ToDo 支社・支店・支所 の追加
 	//	ToDo	30億円と300億円を同一視する対策
 	
@@ -343,7 +349,7 @@ javascript:void(
 		}
 	}
 
-	/** LABEL項目が見つかればクリックする
+	/** LABEL項目が見つかればクリックする（1件のみクリック）
 	 * lbl	LABEL
 	 * reg  正規表現
 	 */
@@ -355,6 +361,19 @@ javascript:void(
 				el.click();
 				//見つかったのでブレーク
 				break;
+			}
+		}
+	}
+	/** LABEL項目が見つかればクリックする（すべてクリック）
+	 * lbl	LABEL
+	 * reg  正規表現
+	 */
+	function selectLabelByTextAll(lbl, reg){
+		for(const el of lbl){
+			const text = el.textContent.trim();
+			const isMatch = reg.test(text);
+			if(isMatch){
+				el.click();
 			}
 		}
 	}
