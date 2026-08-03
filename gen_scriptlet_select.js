@@ -1,6 +1,6 @@
 javascript:void(
 (function(){
-	const scriptVersion = '2026080202'
+	const scriptVersion = '2026080203'
 	
 	console.clear();
 	console.log('rr.js start',`ver=${scriptVersion}`);
@@ -111,8 +111,8 @@ javascript:void(
 	selectLabelByText(   cachedSpan	, /鹿児島/);							/* 都道府県 */
 	selectLabelByText(   cachedLabel, /^200\b|^201\b/)					/* 従業員201～ */
 	selectLabelByText(   cachedLabel, /[^,0-9]30{2}\b|[^,0-9]301\b/)		/* 従業員300～ */
-	selectLabelByText(   cachedLabel, /^300\b|^301\b/)					/* 従業員300～ */
-	selectLabelByText(   cachedLabel, /[^,0-9]400\b/);					/* 年収 1400や1,400回避 */
+	selectLabelByText(   cachedLabel, /^30(0*(?!億円)\b|\b)|^301(?!億)\b/)	/* 従業員300～ */
+	selectLabelByText(   cachedLabel, /[^,0-9]400(?!億)\b/);				/* 年収 1400や1,400回避 */
 	selectLabelByText(   cachedLabel, /^400\b/);							/* 年収 */
 	selectLabelByText(   cachedLabel, /ホンダ|ハイブリッド|HEV|フィット|honda|fit|コンパクト/i);
 																	/* 車関連 */
@@ -124,9 +124,6 @@ javascript:void(
 	 * 
 	*/
 	selectLabelByColor( cachedLabel, /^[赤青黄緑]$/);			/** 見つかったラベルをすべてクリックする */
-
-	// ToDo 支社・支店・支所 の追加
-	//	ToDo	30億円と300億円を同一視する対策
 	
 	/* D Style 住所入力用 */
 	if(/^https?:\/\/\w+\.dstyleweb\.com/.test(location.href)){
