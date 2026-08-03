@@ -1,6 +1,6 @@
 javascript:void(
 (function(){
-	const scriptVersion = '2026073001'
+	const scriptVersion = '2026080201'
 	
 	console.clear();
 	console.log('rr.js start',`ver=${scriptVersion}`);
@@ -246,9 +246,11 @@ javascript:void(
 	
 		// 画面内のすべてのセレクトボックスをループ
 		document.querySelectorAll('select').forEach(sel => {
-			
+			const options = sel.querySelectorAll('option');
+			const total = options.length; // 総数を取得
+
 			// option要素を1つずつチェック
-			for (const opt of sel.querySelectorAll('option')) {
+			for (const [index, opt] of options.entries()) {
 				const text = opt.textContent.trim();
 	
 				// キーワードのどれかにマッチするかチェック
@@ -269,6 +271,12 @@ javascript:void(
 					sel.dispatchEvent(new Event('change', { bubbles: true })); // イベント発生
 					
 					break; // 💡 このセレクトボックスは設定完了なので、次のセレクトボックスへ！
+				} else{
+					// 最終的に見つからなかった場合、最初のoptionを選択状態とする
+					// 最後のインデックス（総数 - 1）であるか判定
+					if (index === total - 1) {
+						sel.value = sel.querySelector('option').value;
+					}
 				}
 			}
 		});
