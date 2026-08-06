@@ -1,6 +1,6 @@
 javascript:void(
 (function(){
-	const scriptVersion = '2026080203'
+	const scriptVersion = '2026080501'
 	
 	console.clear();
 	console.log('rr.js start',`ver=${scriptVersion}`);
@@ -117,8 +117,22 @@ javascript:void(
 	selectLabelByText(   cachedLabel, /ホンダ|ハイブリッド|HEV|フィット|honda|fit|コンパクト/i);
 																	/* 車関連 */
 	selectLabelByText(   cachedLabel,								/* その他・ひっかけ対策 */
-		/ビーグル|メビウス|auひかり|1\+1=2|20年以上|参加したことはない|異性愛|45～54歳$|3人$|^Z$|^1台$|以外は屋内|フルタイム|正規の職員|りんご|きいろ|参加したくない|非上場|ゴールド会員|課長|情報|情シ|赤と白|チンパンジー|チョコレート|水は液体|プラチナ会員|ハンバーグ|フランス|上場していない|未上場/);
+		/りんご|きいろ|ビーグル|メビウス|auひかり|20年以上|参加したことはない|異性愛|45～54歳$|3人$|^1台$|以外は屋内|フルタイム|正規の職員|参加したくない|非上場|ゴールド会員|課長|情報|情シ|赤と白|プラチナ会員|上場していない|未上場/);
 	
+	/** 特定のアンケートサイトによるひっかけ対策
+	 * ①pathnameが/ans/pc/processAnswer.php
+	 * ②完全一致する単語があれば該当とする
+	 * ③1つのページ内に複数の当該単語があるケースがあり、それをすべてクリックする
+	 * */
+	if(location.pathname.startsWith('/ans/pc/processAnswer.php')){
+		const targetLabel = ['Z','りんご','きいろ','1+1=2','チンパンジー','チョコレート','水は液体','ハンバーグ','フランス','赤','青','黄','緑',];
+		for(el of cachedLabel){
+			const isMatch = targetLabel.some(item=>item===el.textContent.trim());
+			if(isMatch){
+				el.click();
+			}
+		}
+	}
 	/* D Style 住所入力用 */
 	if(/^https?:\/\/\w+\.dstyleweb\.com/.test(location.href)){
 		/**
@@ -286,7 +300,8 @@ javascript:void(
 	 * 条件に一致する項目をすべてクリックする（途中でbreakしない）
 	 * 
 	*/
-	selectLabelByColor( cachedLabel, /^[赤青黄緑]$/);			/** 見つかったラベルをすべてクリックする */
+	//いったん休止
+	//selectLabelByColor( cachedLabel, /^[赤青黄緑]$/);			/** 見つかったラベルをすべてクリックする */
 
 	/** チェックボックス、ラジオボタンしめの処理
 	 * いずれもチェックが入らなかったときに1つはチェックをれます
