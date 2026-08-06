@@ -1,6 +1,6 @@
 javascript:void(
 (function(){
-	const scriptVersion = '2026080501'
+	const scriptVersion = '2026080502'
 	
 	console.clear();
 	console.log('rr.js start',`ver=${scriptVersion}`);
@@ -125,13 +125,20 @@ javascript:void(
 	 * ③1つのページ内に複数の当該単語があるケースがあり、それをすべてクリックする
 	 * */
 	if(location.pathname.startsWith('/ans/pc/processAnswer.php')){
-		const targetLabel = ['Z','りんご','きいろ','1+1=2','チンパンジー','チョコレート','水は液体','ハンバーグ','フランス','赤','青','黄','緑',];
-		for(el of cachedLabel){
-			const isMatch = targetLabel.some(item=>item===el.textContent.trim());
-			if(isMatch){
-				el.click();
+		// 1. 検索を高速化（Setオブジェクト化）
+		const targetLabelSet = new Set([
+			'Z', 'りんご', 'きいろ', '1+1=2', 'チンパンジー', 'チョコレート', 
+			'水は液体', 'ハンバーグ', 'フランス', '赤', '青', '黄', '緑'
+		]);
+
+		for (const el of cachedLabel) {
+			const text = el.textContent.trim();
+			
+			// 計算量 O(1) で一瞬で判定
+			if (targetLabelSet.has(text)) {
+			  el.click();
 			}
-		}
+		 }
 	}
 	/* D Style 住所入力用 */
 	if(/^https?:\/\/\w+\.dstyleweb\.com/.test(location.href)){
