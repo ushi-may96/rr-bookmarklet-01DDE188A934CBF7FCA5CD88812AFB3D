@@ -1,6 +1,6 @@
 javascript:void(
 (function(){
-	const scriptVersion = '2026080502'
+	const scriptVersion = '2026080701'
 	
 	console.clear();
 	console.log('rr.js start',`ver=${scriptVersion}`);
@@ -111,7 +111,7 @@ javascript:void(
 	selectLabelByText(   cachedSpan	, /鹿児島/);							/* 都道府県 */
 	selectLabelByText(   cachedLabel, /^200\b|^201\b/)					/* 従業員201～ */
 	selectLabelByText(   cachedLabel, /[^,0-9]30{2}\b|[^,0-9]301\b/)		/* 従業員300～ */
-	selectLabelByText(   cachedLabel, /^30(0*(?!億円)\b|\b)|^301(?!億)\b/)	/* 従業員300～ */
+	selectLabelByText(   cachedLabel, /^30(0*(?!億円|万円)\b|\b)|^301(?!億|万円)\b/)	/* 従業員300～ */
 	selectLabelByText(   cachedLabel, /[^,0-9]400(?!億)\b/);				/* 年収 1400や1,400回避 */
 	selectLabelByText(   cachedLabel, /^400\b/);							/* 年収 */
 	selectLabelByText(   cachedLabel, /ホンダ|ハイブリッド|HEV|フィット|honda|fit|コンパクト/i);
@@ -128,7 +128,7 @@ javascript:void(
 		// 1. 検索を高速化（Setオブジェクト化）
 		const targetLabelSet = new Set([
 			'Z', 'りんご', 'きいろ', '1+1=2', 'チンパンジー', 'チョコレート', 
-			'水は液体', 'ハンバーグ', 'フランス', '赤', '青', '黄', '緑'
+			'水は液体', 'ハンバーグ', 'フランス', '赤', '青', '黄', '緑', '野球', '東京'
 		]);
 
 		for (const el of cachedLabel) {
