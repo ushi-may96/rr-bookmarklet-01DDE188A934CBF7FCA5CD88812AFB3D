@@ -1,18 +1,13 @@
 javascript:void(
 (function(){
-	const scriptVersion = '2026080701'
+	const scriptVersion = '2026080902'
 	
 	console.clear();
 	console.log('rr.js start',`ver=${scriptVersion}`);
 
 	const myAge = getMyAge().toString();
-	/*
-	ToDo
-	ラジオの全チェックが入らないぞ	
-	*/
 	let history = []; 
 	const historyLength = 3;
-
 
 	const cachedLabel		= document.querySelectorAll('LABEL');
 	const cachedDiv			= document.querySelectorAll('DIV');
@@ -258,7 +253,7 @@ javascript:void(
 				'技術','情報','九州','ホンダ','フィット',
 				'課長', '300～', '400～', /400(?:万円)?～'/, '～500','日本',
 				age,
-				/鹿児島県?/,/^(?:犬|イヌ)$/,/^会社員?/
+				/鹿児島県?/,/^(?:犬|イヌ)$/,/^会社員?/,/課長/
 
 				];
 	
@@ -489,7 +484,8 @@ javascript:void(
 	 * LABELにその他がある時に、テキストボックスは強制的に空にする
 	 */
 	function ignoreAge(){
-		if(/dstyleweb/.test(location.href)){
+		const ignoreText = ['その他','上記以外'];
+		if(/dstyleweb/.test(location.hostname)){
 			const sonotaText = document.querySelector('input.CIN[type="text"]');
 			if(sonotaText){
 				const isOtherLabel = [...document.querySelectorAll('label')]
@@ -499,11 +495,11 @@ javascript:void(
 				}
 			}
 		}
-		if(/enq\.web-mc\.net/.test(location.href)){
+		if(/enq\.web-mc\.net/.test(location.hostname)){
 			const sonotaText = document.querySelector('input[type="text"]');
 			if(sonotaText){
 				for(el of document.querySelectorAll('span.label-text')){
-					if(el.textContent.includes('その他')){
+					if(ignoreText.some(text=>el.textContent.trim().includes(text))){
 						sonotaText.value = '';
 						break;
 					}
@@ -516,7 +512,7 @@ javascript:void(
 		const sonotaText = document.querySelector('input[type="text"]');
 		if(sonotaText){
 			for(el of document.querySelectorAll('label,div.side_v_text')){
-				if(el.textContent.includes('その他')){
+				if(ignoreText.some(text=>el.textContent.trim().includes(text))){
 					sonotaText.value = '';
 					break;
 				}
