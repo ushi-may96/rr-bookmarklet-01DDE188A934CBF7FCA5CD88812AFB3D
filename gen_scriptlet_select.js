@@ -1,6 +1,6 @@
 javascript:void(
 (function(){
-	const scriptVersion = '2026080902'
+	const scriptVersion = '2026081601'
 	
 	console.clear();
 	console.log('rr.js start',`ver=${scriptVersion}`);
@@ -112,7 +112,7 @@ javascript:void(
 	selectLabelByText(   cachedLabel, /ホンダ|ハイブリッド|HEV|フィット|honda|fit|コンパクト/i);
 																	/* 車関連 */
 	selectLabelByText(   cachedLabel,								/* その他・ひっかけ対策 */
-		/りんご|きいろ|ビーグル|メビウス|auひかり|20年以上|参加したことはない|異性愛|45～54歳$|3人$|^1台$|以外は屋内|フルタイム|正規の職員|参加したくない|非上場|ゴールド会員|課長|情報|情シ|赤と白|プラチナ会員|上場していない|未上場/);
+		/りんご|きいろ|ビーグル|メビウス|ゆうちょ|auひかり|20年以上|参加したことはない|異性愛|45～54歳$|3人$|^1台$|以外は屋内|フルタイム|正規の職員|参加したくない|非上場|ゴールド会員|課長|情報|情シ|赤と白|プラチナ会員|上場していない|未上場/);
 	
 	/** 特定のアンケートサイトによるひっかけ対策
 	 * ①pathnameが/ans/pc/processAnswer.php
