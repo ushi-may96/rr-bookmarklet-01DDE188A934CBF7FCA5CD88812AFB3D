@@ -109,7 +109,7 @@ javascript:void(
 	selectLabelByText(   cachedLabel, /^30(0*(?!億円|万円)\b|\b)|^301(?!億|万円)\b/)	/* 従業員300～ */
 	selectLabelByText(   cachedLabel, /[^,0-9]400(?!億)\b/);				/* 年収 1400や1,400回避 */
 	selectLabelByText(   cachedLabel, /^400\b/);							/* 年収 */
-	selectLabelByText(   cachedLabel, /^3人(世帯|家族)?$|ホンダ|ハイブリッド|HEV|フィット|honda|fit|コンパクト/i);
+	selectLabelByText(   cachedLabel, /^3人(世帯|家族)?$|^中学3年|^オール電化|ホンダ|ハイブリッド|HEV|フィット|honda|fit|コンパクト/i);
 																	/* 車関連・家族 */
 	selectLabelByText(   cachedLabel,								/* その他・ひっかけ対策 */
 		/りんご|きいろ|ビーグル|メビウス|ゆうちょ|auひかり|20年以上|参加したことはない|異性愛|45～54歳$|3人$|^1台$|以外は屋内|フルタイム|正規の職員|参加したくない|非上場|ゴールド会員|課長|情報|情シ|赤と白|プラチナ会員|上場していない|未上場/);
