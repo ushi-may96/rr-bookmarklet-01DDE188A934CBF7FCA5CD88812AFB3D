@@ -1,6 +1,6 @@
 javascript:void(
 (function(){
-	const scriptVersion = '2026081601'
+	const scriptVersion = '2026082701'
 	
 	console.clear();
 	console.log('rr.js start',`ver=${scriptVersion}`);
@@ -28,7 +28,9 @@ javascript:void(
 
 		// 2. テキストボックスが存在する場合のみ、"その他" のLABELを探す
 		// ※ txtItem が null なら、右側の some() は実行すらされずスキップされます（短絡評価）
-		isOther = txtItem && [...document.querySelectorAll('label')].some(el => el.textContent.trim() === 'その他');
+		isOther = 
+			txtItem && [...document.querySelectorAll('label')]
+			.some(el => el.textContent.trim() === 'その他');
 
 		// 3. 両方揃っていればクリアする
 		//if (isOther) {
@@ -109,7 +111,7 @@ javascript:void(
 	selectLabelByText(   cachedLabel, /^30(0*(?!億円|万円)\b|\b)|^301(?!億|万円)\b/)	/* 従業員300～ */
 	selectLabelByText(   cachedLabel, /[^,0-9]400(?!億)\b/);				/* 年収 1400や1,400回避 */
 	selectLabelByText(   cachedLabel, /^400\b/);							/* 年収 */
-	selectLabelByText(   cachedLabel, /^3人(世帯|家族)?$|^中学2年|^オール電化|ホンダ|ハイブリッド|HEV|フィット|honda|fit|コンパクト/i);
+	selectLabelByText(   cachedLabel, /^3人(世帯|家族)?$|^中学2年|^オール電化|ホンダ|ハイブリッド|HEV|^フィット$|honda|fit|コンパクト/i);
 																	/* 車関連・家族 */
 	selectLabelByText(   cachedLabel,								/* その他・ひっかけ対策 */
 		/りんご|きいろ|ビーグル|メビウス|ゆうちょ|auひかり|20年以上|参加したことはない|異性愛|45～54歳$|3人$|^1台$|以外は屋内|フルタイム|正規の職員|参加したくない|非上場|ゴールド会員|課長|情報|情シ|赤と白|プラチナ会員|上場していない|未上場/);
@@ -250,7 +252,7 @@ javascript:void(
 		const age = getMyAge();
 		const items = ['1975', /10/,
 				'50代男性','システム','開発','IT','エンジニア',
-				'技術','情報','九州','ホンダ','フィット',
+				'技術','情報','九州','ホンダ',/^フィット$/,
 				'課長', '300～', '400～', /400(?:万円)?～'/, '～500','日本',
 				age,
 				/鹿児島県?/,/^(?:犬|イヌ)$/,/^会社員?/,/課長/,/^中学2年/
@@ -484,12 +486,12 @@ javascript:void(
 	 * LABELにその他がある時に、テキストボックスは強制的に空にする
 	 */
 	function ignoreAge(){
-		const ignoreText = ['その他','上記以外'];
+		const ignoreText = ['その他','上記以外','具体的に'];
 		if(/dstyleweb/.test(location.hostname)){
 			const sonotaText = document.querySelector('input.CIN[type="text"]');
 			if(sonotaText){
 				const isOtherLabel = [...document.querySelectorAll('label')]
-					.some(el=>el.textContent.trim().startsWith('その他'));
+					.some(el => /^(その他|上記以外|具体的に)/.test(el.textContent.trim()));			
 				if(isOtherLabel){
 					sonotaText.value = '';
 				}
