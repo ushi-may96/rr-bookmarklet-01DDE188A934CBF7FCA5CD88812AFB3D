@@ -1,6 +1,6 @@
 javascript:void(
 (function(){
-	const scriptVersion = '2026082701'
+	const scriptVersion = '2026090801'
 	
 	console.clear();
 	console.log('rr.js start',`ver=${scriptVersion}`);
@@ -84,7 +84,7 @@ javascript:void(
 		}
 	}
 
-	selectLabelByText(   document.querySelectorAll('span.radio-button-label-text'), /会社/);		/* 会社員を想定 */
+	selectLabelByText(   document.querySelectorAll('span.radio-button-label-text'), /会社(?!役員)/);		/* 会社員を想定 */
 	selectLabelByText(   cachedLabel, /(中学生|高等学校|高校|高卒)/);		/* 学歴 */
 	selectLabelByText(   cachedLabel, /中学2年(生男子)?$/);				/* 子供の～ */
 
@@ -114,7 +114,7 @@ javascript:void(
 	selectLabelByText(   cachedLabel, /^3人(世帯|家族)?$|^中学2年|^オール電化|ホンダ|ハイブリッド|HEV|^フィット$|honda|fit|コンパクト/i);
 																	/* 車関連・家族 */
 	selectLabelByText(   cachedLabel,								/* その他・ひっかけ対策 */
-		/りんご|きいろ|ビーグル|メビウス|ゆうちょ|auひかり|20年以上|参加したことはない|異性愛|45～54歳$|3人$|^1台$|以外は屋内|フルタイム|正規の職員|参加したくない|非上場|ゴールド会員|課長|情報|情シ|赤と白|プラチナ会員|上場していない|未上場/);
+		/りんご|きいろ|ビーグル|B型|メビウス|ゆうちょ|auひかり|20年以上|参加したことはない|異性愛|45～54歳$|3人$|^1台$|以外は屋内|フルタイム|正規の職員|参加したくない|非上場|ゴールド会員|課長|情報|情シ|赤と白|プラチナ会員|上場していない|未上場/);
 	
 	/** 特定のアンケートサイトによるひっかけ対策
 	 * ①pathnameが/ans/pc/processAnswer.php
