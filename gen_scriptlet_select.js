@@ -108,7 +108,7 @@ javascript:void(
 	selectLabelByText(   cachedSpan	, /鹿児島/);							/* 都道府県 */
 	selectLabelByText(   cachedLabel, /^200\b|^201\b/)					/* 従業員201～ */
 	selectLabelByText(   cachedLabel, /[^,0-9]30{2}\b|[^,0-9]301\b/)		/* 従業員300～ */
-	selectLabelByText(   cachedLabel, /^30(0*(?!億円|万円)\b|\b)|^301(?!億|万円)\b/)	/* 従業員300～ */
+	selectLabelByText(   cachedLabel, /^(?:300|301)(?!.*(?:億円|万円|歳)).*$/)	/* 従業員300～ */
 	selectLabelByText(   cachedLabel, /[^,0-9]400(?!億)\b/);				/* 年収 1400や1,400回避 */
 	selectLabelByText(   cachedLabel, /^400\b/);							/* 年収 */
 	selectLabelByText(   cachedLabel, /^3人(世帯|家族)?$|^中学2年|^オール電化|ホンダ|ハイブリッド|HEV|^フィット$|honda|fit|コンパクト/i);
