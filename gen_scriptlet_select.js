@@ -84,19 +84,19 @@ javascript:void(
 		}
 	}
 
-	selectLabelByText(   document.querySelectorAll('span.radio-button-label-text'), /会社(?!役員)/);		/* 会社員を想定 */
+	selectLabelByText(   document.querySelectorAll('span.radio-button-label-text'), /^(?!役員|経営)会社員*$/);		/* 会社員を想定 */
 	selectLabelByText(   cachedLabel, /(中学生|高等学校|高校|高卒)/);		/* 学歴 */
 	selectLabelByText(   cachedLabel, /中学2年(生男子)?$/);				/* 子供の～ */
 
 	selectLabelByText(   cachedLabel, 
-		/(ソフトウェア|システムエンジニア|情報サービス|IT|システム開発|保守|運用関連職)/);	/* 業種 */
-	selectLabelByText(   cachedLabel, /^(?!.*(契約|派遣))社員.*$/);		/* 会社員を想定 */
-	selectLabelByText(   cachedLabel, /^正社員(?!.*管理職).*$/);			/* 会社員を想定 */
-	selectLabelByText(   cachedLabel, /会社勤務\S+管理職/);				/* 会社員を想定 */
-	selectLabelByText(   cachedLabel, /会社員($|\W?管理|\W?課長)/);				/* 会社?　＜ 会社員 または 会社員（管理職） を優先 */
-	selectLabelByText(   cachedLabel, /正社員/);								/* 会社?　＜ 正社員 を優先 */
-	selectLabelByText(   cachedLabel, /^正社員$/);						/* 会社?　＜ 正社員 を優先 */
-	selectLabelByText(   cachedLabel, /((情報|通信)技術.*|技術[職|系]?)/);/* 会社?　＜ 正社員 を優先 */
+		/(ソフトウェア|システムエンジニア|情報サービス|IT|システム開発|保守|運用関連職)/);		// 業種
+	selectLabelByText(   cachedLabel, /^(?!.*(契約|派遣))社員.*$/);                  // 会社員を想定
+	selectLabelByText(   cachedLabel, /^正社員(?!.*管理職).*$/);                      // 会社員を想定
+	selectLabelByText(   cachedLabel, /会社勤務\S+管理職/);                           // 会社員を想定
+	selectLabelByText(   cachedLabel, /会社員($|\W?管理|\W?課長)/);                   // 会社?　＜ 会社員 または 会社員（管理職） を優先
+	selectLabelByText(   cachedLabel, /正社員|^(?!役員|経営)会社員*$/);               // 会社・会社員　役員・経営を除く＜ 正社員 を優先
+	selectLabelByText(   cachedLabel, /^正社員$/);                                    // 会社?　＜ 正社員 を優先
+	selectLabelByText(   cachedLabel, /((情報|通信)技術.*|技術[職|系]?)/);             //会社?　＜ 正社員 を優先 
 	selectLabelByText(   cachedLabel, /^いない$/);
 
 	selectLabelByText(   cachedLabel, /[^,0-9]499\b/);					/* 従業員数(499が優先) */
@@ -114,7 +114,7 @@ javascript:void(
 	selectLabelByText(   cachedLabel, /^3人(世帯|家族)?$|^中学2年|^オール電化|ホンダ|ハイブリッド|HEV|^フィット$|honda|fit|コンパクト/i);
 																	/* 車関連・家族 */
 	selectLabelByText(   cachedLabel,								/* その他・ひっかけ対策 */
-		/りんご|きいろ|ビーグル|B型|メビウス|ゆうちょ|auひかり|20年以上|参加したことはない|異性愛|45～54歳$|3人$|^1台$|以外は屋内|フルタイム|正規の職員|参加したくない|非上場|ゴールド会員|課長|情報|情シ|赤と白|プラチナ会員|上場していない|未上場/);
+		/^[黄赤青緑]$|りんご|きいろ|ビーグル|B型|メビウス|ゆうちょ|auひかり|20年以上|参加したことはない|異性愛|45～54歳$|3人$|^1台$|以外は屋内|フルタイム|正規の職員|参加したくない|非上場|ゴールド会員|課長|情報|情シ|赤と白|プラチナ会員|上場していない|未上場/);
 	
 	/** 特定のアンケートサイトによるひっかけ対策
 	 * ①pathnameが/ans/pc/processAnswer.php
