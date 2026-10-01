@@ -1,6 +1,6 @@
 javascript:void(
 (function(){
-	const scriptVersion = '2026090801'
+	const scriptVersion = '202609100101'
 	
 	console.clear();
 	console.log('rr.js start',`ver=${scriptVersion}`);
@@ -357,7 +357,7 @@ javascript:void(
 	*********************************************** */
 	/* 一意なname毎に、1つを選択状態にする */
 	function selectRadioByText(el){
-		const idx = 0;
+		let idx = 0;
 		for(const r of el){
 			if(idx===0){
 				r.checked = true;
@@ -381,6 +381,7 @@ javascript:void(
 			const text = el.textContent.trim();
 			const isMatch = reg.test(text);
 			if(isMatch){
+				console.log(`[selectLabelByText] 正規表現にヒットしました：${reg.source}`);
 				el.click();
 				//見つかったのでブレーク
 				break;
