@@ -1,6 +1,6 @@
 javascript:void(
 (function(){
-	const scriptVersion = '202609100101'
+	const scriptVersion = '202609100901'
 	
 	console.clear();
 	console.log('rr.js start',`ver=${scriptVersion}`);
@@ -66,7 +66,30 @@ javascript:void(
 	 *	46番目の都道府県を選択する方法
 	 * https://enq.member.insight.rakuten.co.jp/enq/
 	 * 	[きいろ][みどり]のひっかけ対策
-	 * 	document.querySelectorAll('div.inline-block div') のtextContent */
+	 * 	document.querySelectorAll('div.inline-block div') のtextContent
+	 * 
+	 *  */
+	/**
+	 * テキスト（例: "25～29歳"）を指定してプルダウンの項目を選択する関数
+	 * @param {string} text - 選択したい項目のテキスト
+	 */
+	function selectRakutenDropdownByText(text) {
+		// すべての項目（.esb-item）を取得
+		const items = document.querySelectorAll('.esb-dropdown .esb-item');
+		
+		for (const item of items) {
+			// 項目内のテキストを取得し、前後の不要な空白を削除
+			const itemText = item.textContent.trim();
+			
+			// 指定したテキストが含まれているか判定（例: "3. 25～29歳" に "25～29歳" が含まれるか）
+			if (itemText.includes(text)) {
+			// 要素をクリックして選択状態にする
+			item.click();
+			console.log(`「${text}」を選択しました。`);
+			break; 
+			}
+		}
+	}
 	if(/internet-research\.jp|insight\.rakuten\.co\.jp/.test(location.href)){
 		// 都道府県
 		document.querySelector('div.esb-item[data-value="46"]')?.click();
@@ -82,6 +105,9 @@ javascript:void(
 				//複数アイテムのヒットがあるため、break不要
 			}
 		}
+		// 年齢
+		// 関数をコールして「50～54歳」を選択する
+		selectRakutenDropdownByText('50～54歳');			
 	}
 
 	selectLabelByText(   document.querySelectorAll('span.radio-button-label-text'), /^(?!役員|経営)会社員*$/);		/* 会社員を想定 */
@@ -255,7 +281,7 @@ javascript:void(
 				'技術','情報','九州','ホンダ',/^フィット$/,
 				'課長', '300～', '400～', /400(?:万円)?～'/, '～500','日本',
 				age,
-				/鹿児島県?/,/^(?:犬|イヌ)$/,/^会社員?/,/課長/,/^中学2年/
+				/鹿児島県?/,/^(?:犬|イヌ|ワンちゃん|ワンチャン)$/,/^会社員?/,/課長/,/^中学2年/
 
 				];
 	
