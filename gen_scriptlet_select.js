@@ -1,6 +1,6 @@
 javascript:void(
 (function(){
-	const scriptVersion = '20261029001'
+	const scriptVersion = '20261109001'
 	
 	console.clear();
 	console.log('rr.js start',`ver=${scriptVersion}`);
@@ -148,20 +148,40 @@ javascript:void(
 	 * ③1つのページ内に複数の当該単語があるケースがあり、それをすべてクリックする
 	 * */
 	if(location.pathname.startsWith('/ans/pc/processAnswer.php')){
+		// 0.設問文を読み取る
+		const questionTitle = document.querySelector('.qtitle').textContent.trim();
+
 		// 1. 検索を高速化（Setオブジェクト化）
 		const targetLabelSet = new Set([
 			'Z', 'りんご', 'きいろ', '1+1=2', 'チンパンジー', 'チョコレート', 
 			'水は液体', 'ハンバーグ', 'フランス', '赤', '青', '黄', '緑', '野球', '東京'
 		]);
+		const targetQuestions = new Map([
+			['次の選択肢の中で国を選ばないでください。','東京'],
+			['次の選択肢から、Zを選んでください。','Z'],
+		]);
 
 		for (const el of cachedLabel) {
 			const text = el.textContent.trim();
-			
 			// 計算量 O(1) で一瞬で判定
 			if (targetLabelSet.has(text)) {
-			  el.click();
+				el.click();
 			}
-		 }
+		}
+
+		// 2.あらかじめ決まっている設問の場合
+		const isMatch = targetQuestions.has(questionTitle);
+		if(isMatch){
+			for(const [key,value] of targetQuestions){
+				for (const el of cachedLabel) {
+					const text = el.textContent.trim();
+					if (value===text) {
+						el.click();
+						break;
+					}
+				}				
+			}
+		}
 	}
 	/** 特定のアンケートサイトによるひっかけ対策
 	 * ①https://monitor.research-plus.net/enquete/?mid=
