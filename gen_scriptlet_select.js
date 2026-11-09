@@ -1,6 +1,6 @@
 javascript:void(
 (function(){
-	const scriptVersion = '202609100901'
+	const scriptVersion = '20261029001'
 	
 	console.clear();
 	console.log('rr.js start',`ver=${scriptVersion}`);
@@ -110,7 +110,7 @@ javascript:void(
 		selectRakutenDropdownByText('50～54歳');			
 	}
 
-	selectLabelByText(   document.querySelectorAll('span.radio-button-label-text'), /^(?!役員|経営)会社員*$/);		/* 会社員を想定 */
+	selectLabelByText(   document.querySelectorAll('span.radio-button-label-text'), /^(?!役員|経営)会社員*$|正規社員/);		/* 会社員を想定 */
 	selectLabelByText(   cachedLabel, /(中学生|高等学校|高校|高卒)/);		/* 学歴 */
 	selectLabelByText(   cachedLabel, /中学2年(生男子)?$/);				/* 子供の～ */
 
@@ -121,7 +121,7 @@ javascript:void(
 	selectLabelByText(   cachedLabel, /会社勤務\S+管理職/);                           // 会社員を想定
 	selectLabelByText(   cachedLabel, /会社員($|\W?管理|\W?課長)/);                   // 会社?　＜ 会社員 または 会社員（管理職） を優先
 	selectLabelByText(   cachedLabel, /正社員|^(?!役員|経営)会社員.*$/);              // 会社・会社員　役員・経営を除く＜ 正社員 を優先
-	selectLabelByText(   cachedLabel, /^正社員$/);                                    // 会社?　＜ 正社員 を優先
+	selectLabelByText(   cachedLabel, /^正社員$|正規社員/);                           // 会社?　＜ 正社員 を優先
 	selectLabelByText(   cachedLabel, /((情報|通信)技術.*|技術[職|系]?)/);             //会社?　＜ 正社員 を優先 
 	selectLabelByText(   cachedLabel, /^いない$/);
 
@@ -163,6 +163,13 @@ javascript:void(
 			}
 		 }
 	}
+	/** 特定のアンケートサイトによるひっかけ対策
+	 * ①https://monitor.research-plus.net/enquete/?mid=
+	 * ②完全一致する単語があれば該当とする
+	 * ③1つのページ内に複数の当該単語があるケースがあり、それをすべてクリックする
+	 *   条件は、[みどり]、[しろ]
+	 * */
+
 	/* D Style 住所入力用 */
 	if(/^https?:\/\/\w+\.dstyleweb\.com/.test(location.href)){
 		/**
@@ -233,7 +240,7 @@ javascript:void(
 	rnLabels.forEach(span => {
 		const labelText = span.textContent.trim();
 		
-		if (/男性|50|会社員|課長/.test(labelText)) {
+		if (/男性|50|会社員|正規社員|課長/.test(labelText)) {
 		const label = span.closest("label");
 		if (!label) return;
 
@@ -281,7 +288,7 @@ javascript:void(
 				'技術','情報','九州','ホンダ',/^フィット$/,
 				'課長', '300～', '400～', /400(?:万円)?～'/, '～500','日本',
 				age,
-				/鹿児島県?/,/^(?:犬|イヌ|ワンちゃん|ワンチャン)$/,/^会社員?/,/課長/,/^中学2年/
+				/鹿児島県?/,/^(?:犬|イヌ|ワンちゃん|ワンチャン)$/,/^会社員?/,/正規社員/,/課長/,/^中学2年/
 
 				];
 	
@@ -390,7 +397,7 @@ javascript:void(
 				++idx;
 			}
 			const text = r.textContent.trim();
-			if(/男|会社員|50代男性|50/.test(text)){
+			if(/男|会社員|正規社員|50代男性|50/.test(text)){
 				r.checked = true;
 				r.dispatchEvent(new Event('change', { bubbles: true }));
 				break;
@@ -513,12 +520,12 @@ javascript:void(
 	 * LABELにその他がある時に、テキストボックスは強制的に空にする
 	 */
 	function ignoreAge(){
-		const ignoreText = ['その他','上記以外','具体的に'];
+		const ignoreText = ['その他','その他：','上記以外','具体的に'];
 		if(/dstyleweb/.test(location.hostname)){
 			const sonotaText = document.querySelector('input.CIN[type="text"]');
 			if(sonotaText){
 				const isOtherLabel = [...document.querySelectorAll('label')]
-					.some(el => /^(その他|上記以外|具体的に)/.test(el.textContent.trim()));			
+					.some(el => /^(その他|その他：|上記以外|具体的に)/.test(el.textContent.trim()));			
 				if(isOtherLabel){
 					sonotaText.value = '';
 				}
