@@ -1,6 +1,6 @@
 javascript:void(
 (function(){
-	const scriptVersion = '20261109001'
+	const scriptVersion = '20261109002'
 	
 	console.clear();
 	console.log('rr.js start',`ver=${scriptVersion}`);
@@ -170,16 +170,18 @@ javascript:void(
 		}
 
 		// 2.あらかじめ決まっている設問の場合
-		const isMatch = targetQuestions.has(questionTitle);
-		if(isMatch){
-			for(const [key,value] of targetQuestions){
-				for (const el of cachedLabel) {
-					const text = el.textContent.trim();
-					if (value===text) {
-						el.click();
-						break;
-					}
-				}				
+		if(questionTitle){
+			const isMatch = targetQuestions.has(questionTitle);
+			if(isMatch){
+				for(const [key,value] of targetQuestions){
+					for (const el of cachedLabel) {
+						const text = el.textContent.trim();
+						if (value===text) {
+							el.click();
+							break;
+						}
+					}				
+				}
 			}
 		}
 	}
