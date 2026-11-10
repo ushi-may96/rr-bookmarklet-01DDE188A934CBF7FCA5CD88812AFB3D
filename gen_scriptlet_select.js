@@ -1,6 +1,6 @@
 javascript:void(
 (function(){
-	const scriptVersion = '20261109002'
+	const scriptVersion = '20261109003'
 	
 	console.clear();
 	console.log('rr.js start',`ver=${scriptVersion}`);
@@ -149,7 +149,7 @@ javascript:void(
 	 * */
 	if(location.pathname.startsWith('/ans/pc/processAnswer.php')){
 		// 0.設問文を読み取る
-		const questionTitle = document.querySelector('.qtitle').textContent.trim();
+		const questionTitle = document.querySelector('.qtitle')?.textContent.trim();
 
 		// 1. 検索を高速化（Setオブジェクト化）
 		const targetLabelSet = new Set([
