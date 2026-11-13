@@ -1,6 +1,6 @@
 javascript:void(
 (function(){
-	const scriptVersion = '20261109003'
+	const scriptVersion = '20261112003'
 	
 	console.clear();
 	console.log('rr.js start',`ver=${scriptVersion}`);
@@ -159,28 +159,29 @@ javascript:void(
 		const targetQuestions = new Map([
 			['次の選択肢の中で国を選ばないでください。','東京'],
 			['次の選択肢から、Zを選んでください。','Z'],
+			['次の選択肢から、食べものを選んでください。','ハンバーグ'],
 		]);
 
-		for (const el of cachedLabel) {
-			const text = el.textContent.trim();
-			// 計算量 O(1) で一瞬で判定
-			if (targetLabelSet.has(text)) {
-				el.click();
+		// 1.あらかじめ想定されてる設問で、targetQuestionsにリストがある場合かどうかの判定
+		const isMatch = questionTitle && targetQuestions.has(questionTitle);
+		if(isMatch){
+			// 2.あらかじめ決まっている設問の場合
+			for(const [key,value] of targetQuestions){
+				for (const el of cachedLabel) {
+					const text = el.textContent.trim();
+					if (value===text) {
+						el.click();
+						break;
+					}
+				}				
 			}
-		}
-
-		// 2.あらかじめ決まっている設問の場合
-		if(questionTitle){
-			const isMatch = targetQuestions.has(questionTitle);
-			if(isMatch){
-				for(const [key,value] of targetQuestions){
-					for (const el of cachedLabel) {
-						const text = el.textContent.trim();
-						if (value===text) {
-							el.click();
-							break;
-						}
-					}				
+		}else{
+			// 3.不特定の設問に対する処理
+			for (const el of cachedLabel) {
+				const text = el.textContent.trim();
+				// 計算量 O(1) で一瞬で判定
+				if (targetLabelSet.has(text)) {
+					el.click();
 				}
 			}
 		}
