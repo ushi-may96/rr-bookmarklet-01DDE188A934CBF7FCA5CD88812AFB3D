@@ -1,6 +1,6 @@
 javascript:void(
 (function(){
-	const scriptVersion = '20261112003'
+	const scriptVersion = '20261113003'
 	
 	console.clear();
 	console.log('rr.js start',`ver=${scriptVersion}`);
@@ -160,6 +160,7 @@ javascript:void(
 			['次の選択肢の中で国を選ばないでください。','東京'],
 			['次の選択肢から、Zを選んでください。','Z'],
 			['次の選択肢から、食べものを選んでください。','ハンバーグ'],
+			['次の選択肢から、正しいものを選んでください。','1+1=2'],
 		]);
 
 		// 1.あらかじめ想定されてる設問で、targetQuestionsにリストがある場合かどうかの判定
