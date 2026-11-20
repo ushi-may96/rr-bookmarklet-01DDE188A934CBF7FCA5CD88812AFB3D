@@ -163,15 +163,31 @@ javascript:void(
 			['次の選択肢から、正しいものを選んでください。','1+1=2'],
 			['次の選択肢の中からお菓子を選んでください。','チョコレート'],
 			['次の選択肢から、植物ではないものを選んでください。','チンパンジー'],
+			['次の選択肢の中から「スポーツ」を選んでください。','野球'],
 		]);
+
+		// 検査用コード
+		console.log('取得した設問:', JSON.stringify(questionTitle));
+		console.log('長さ:', questionTitle?.length);
+		console.log('--- Mapのキー一覧 ---');
+		for (const key of targetQuestions.keys()) {
+		  console.log(JSON.stringify(key), '長さ:', key.length);
+		  console.log('一致するか?:', key === questionTitle);
+		}
 
 		// 1.あらかじめ想定されてる設問で、targetQuestionsにリストがある場合かどうかの判定
 		const isMatch = questionTitle && targetQuestions.has(questionTitle);
 		if(isMatch){
 			// 2.あらかじめ決まっている設問の場合
+			// ** TODO get(Title)に修正できる（forは置き換え出来る）
+			//const answer = targetQuestions.get(questionTitle);
 			for(const [key,value] of targetQuestions){
 				for (const el of cachedLabel) {
-					const text = el.textContent.trim();
+					// if(el.textContent.trim()===answer){
+					// 	el.click();
+					// 	break;
+					// }
+					const text = el.textContent.trim();	
 					if (value===text) {
 						el.click();
 						break;
@@ -570,6 +586,18 @@ javascript:void(
 					}
 				}
 			}
+		}
+		/** テキストボックスに郵便番号を記入するケースがある場合
+		 * 2か所
+		 */
+		const postCode1 = document.querySelector('input[id^="pcode1"]');
+		const postCode2 = document.querySelector('input[id^="pcode2"]');
+		if(postCode1 && postCode2){
+			postCode1.value = '891';
+			postCode2.value = '0404';
+			// 確認できている範囲では、この値を設定するページでは他の入力項目はないため
+			// リターンOK
+			return;
 		}
 		/** 無条件に「その他」を判定するケース
 		 * macromill.com等
