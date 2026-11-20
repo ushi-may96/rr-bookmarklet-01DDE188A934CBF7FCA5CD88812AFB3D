@@ -243,7 +243,10 @@ javascript:void(
 				el.click();
 				clickedNames.add(el.name);
 			}
-		}		
+		}
+		document.querySelectorAll('tbody tr').forEach(tr => {
+			tr.querySelector('button[role="radio"]')?.click();
+		});
 	}
 
 	/**
