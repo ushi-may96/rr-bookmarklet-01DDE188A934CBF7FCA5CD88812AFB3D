@@ -1,6 +1,6 @@
 javascript:void(
 (function(){
-	const scriptVersion = '20261113003'
+	const scriptVersion = '20261122001'
 	
 	console.clear();
 	console.log('rr.js start',`ver=${scriptVersion}`);
@@ -179,21 +179,22 @@ javascript:void(
 		const isMatch = questionTitle && targetQuestions.has(questionTitle);
 		if(isMatch){
 			// 2.あらかじめ決まっている設問の場合
-			// ** TODO get(Title)に修正できる（forは置き換え出来る）
-			//const answer = targetQuestions.get(questionTitle);
-			for(const [key,value] of targetQuestions){
-				for (const el of cachedLabel) {
-					// if(el.textContent.trim()===answer){
-					// 	el.click();
-					// 	break;
-					// }
-					const text = el.textContent.trim();	
-					if (value===text) {
+			const answer = targetQuestions.get(questionTitle);
+			for (const el of cachedLabel) {
+				if(el.textContent.trim()===answer){
 						el.click();
 						break;
-					}
-				}				
+				}
 			}
+			// for(const [key,value] of targetQuestions){
+			// 	for (const el of cachedLabel) {
+			// 		const text = el.textContent.trim();	
+			// 		if (value===text) {
+			// 			el.click();
+			// 			break;
+			// 		}
+			// 	}				
+			// }
 		}else{
 			// 3.不特定の設問に対する処理
 			for (const el of cachedLabel) {
