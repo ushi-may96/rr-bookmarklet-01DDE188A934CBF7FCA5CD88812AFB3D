@@ -1,6 +1,6 @@
 javascript:void(
 (function(){
-	const scriptVersion = '20261122001'
+	const scriptVersion = '20261122002'
 	
 	console.clear();
 	console.log('rr.js start',`ver=${scriptVersion}`);
