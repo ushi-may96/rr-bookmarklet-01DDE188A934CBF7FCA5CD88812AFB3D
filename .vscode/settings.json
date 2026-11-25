@@ -1,2 +1,19 @@
 {
-}
+    "auto-version-increment.update.onSave": "Patch/Revision",
+    "auto-version-increment.version.file": [
+      {
+        "path": "gen_scriptlet_select.js",              // ← 実際のファイルパスに変更
+        "prefix": "const scriptVersion = '",            // または ' の場合は \'
+        "sufix": "';",
+        "primary": true,
+        "useWorkspacePath": true
+      }
+      {
+        "path": "gen_scriptlet_select.min.js",
+        "prefix": "?id=",
+        "sufix": "';",
+        "primary": false,
+        "useWorkspacePath": true
+      }      
+    ]
+  }

@@ -1,7 +1,7 @@
 javascript:void(
 (function(){
-	const scriptVersion = '20261122002'
-	
+	const scriptVersion = '1.20261122.14';
+
 	console.clear();
 	console.log('rr.js start',`ver=${scriptVersion}`);
 
@@ -149,7 +149,8 @@ javascript:void(
 	 * */
 	if(location.pathname.startsWith('/ans/pc/processAnswer.php')){
 		// 0.設問文を読み取る
-		const questionTitle = document.querySelector('.qtitle')?.textContent.trim();
+		//   Tampermonkeyによるハイライト処理の影響を除去するため、ハイライトキーワードはから文字にリプレース
+		const questionTitle = document.querySelector('.qtitle')?.textContent.trim().replace(/\*→\*/gi,'');
 
 		// 1. 検索を高速化（Setオブジェクト化）
 		const targetLabelSet = new Set([
@@ -157,13 +158,14 @@ javascript:void(
 			'水は液体', 'ハンバーグ', 'フランス', '赤', '青', '黄', '緑', '野球', '東京'
 		]);
 		const targetQuestions = new Map([
-			['次の選択肢の中で国を選ばないでください。','東京'],
-			['次の選択肢から、Zを選んでください。','Z'],
-			['次の選択肢から、食べものを選んでください。','ハンバーグ'],
-			['次の選択肢から、正しいものを選んでください。','1+1=2'],
-			['次の選択肢の中からお菓子を選んでください。','チョコレート'],
-			['次の選択肢から、植物ではないものを選んでください。','チンパンジー'],
-			['次の選択肢の中から「スポーツ」を選んでください。','野球'],
+			['次の選択肢の中で国を選ばないでください。'					,'東京'],
+			['次の選択肢から、Zを選んでください。'						,'Z'],
+			['次の選択肢から、食べものを選んでください。'				,'ハンバーグ'],
+			['次の選択肢から、食べものではないものを選んでください。'	,'フランス'],
+			['次の選択肢から、正しいものを選んでください。'				,'1+1=2'],
+			['次の選択肢の中からお菓子を選んでください。'				,'チョコレート'],
+			['次の選択肢から、植物ではないものを選んでください。'		,'チンパンジー'],
+			['次の選択肢の中から「スポーツ」を選んでください。'			,'野球'],
 		]);
 
 		// 検査用コード
