@@ -1,6 +1,6 @@
 javascript:void(
 (function(){
-	const scriptVersion = '1.20261122.14';
+	const scriptVersion = '1.20261126.20';
 
 	console.clear();
 	console.log('rr.js start',`ver=${scriptVersion}`);
@@ -169,13 +169,13 @@ javascript:void(
 		]);
 
 		// 検査用コード
-		console.log('取得した設問:', JSON.stringify(questionTitle));
+/* 		console.log('取得した設問:', JSON.stringify(questionTitle));
 		console.log('長さ:', questionTitle?.length);
 		console.log('--- Mapのキー一覧 ---');
 		for (const key of targetQuestions.keys()) {
 		  console.log(JSON.stringify(key), '長さ:', key.length);
 		  console.log('一致するか?:', key === questionTitle);
-		}
+		} */
 
 		// 1.あらかじめ想定されてる設問で、targetQuestionsにリストがある場合かどうかの判定
 		const isMatch = questionTitle && targetQuestions.has(questionTitle);
@@ -569,21 +569,35 @@ javascript:void(
 	 */
 	function ignoreAge(){
 		const ignoreText = ['その他','その他：','上記以外','具体的に'];
-		if(/dstyleweb/.test(location.hostname)){
+		if(location.hostname.includes('dstyleweb')){
 			const sonotaText = document.querySelector('input.CIN[type="text"]');
 			if(sonotaText){
 				const isOtherLabel = [...document.querySelectorAll('label')]
-					.some(el => /^(その他|その他：|上記以外|具体的に)/.test(el.textContent.trim()));			
+					.some(el => /^(その他|その他：|上記以外|具体的に)$/.test(el.textContent.trim()));			
 				if(isOtherLabel){
 					sonotaText.value = '';
 				}
 			}
 		}
-		if(/enq\.web-mc\.net/.test(location.hostname)){
+		else if(location.hostname.includes('enq.web-mc.net')){
 			const sonotaText = document.querySelector('input[type="text"]');
 			if(sonotaText){
 				for(el of document.querySelectorAll('span.label-text')){
-					if(ignoreText.some(text=>el.textContent.trim().includes(text))){
+					if(ignoreText.some(text=>el.textContent.trim()===text)){
+						sonotaText.value = '';
+						break;
+					}
+				}
+			}
+		}
+		else {
+			/** 無条件に「その他」を判定するケース
+			 * macromill.com等
+			 * */		
+			const sonotaText = document.querySelector('input[type="text"]');
+			if(sonotaText){
+				for(el of document.querySelectorAll('label,div.side_v_text')){
+					if(ignoreText.some(text=>el.textContent.trim()===text)){
 						sonotaText.value = '';
 						break;
 					}
@@ -601,18 +615,6 @@ javascript:void(
 			// 確認できている範囲では、この値を設定するページでは他の入力項目はないため
 			// リターンOK
 			return;
-		}
-		/** 無条件に「その他」を判定するケース
-		 * macromill.com等
-		 * */		
-		const sonotaText = document.querySelector('input[type="text"]');
-		if(sonotaText){
-			for(el of document.querySelectorAll('label,div.side_v_text')){
-				if(ignoreText.some(text=>el.textContent.trim().includes(text))){
-					sonotaText.value = '';
-					break;
-				}
-			}
 		}
 	}
 })()// 即時関数の終了
